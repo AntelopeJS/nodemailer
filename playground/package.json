@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "ajs project run -w",
+    "dev": "ajs project run -w --verbose %",
     "build": "rm -rf dist && tsc"
   },
   "devDependencies": {
@@ -17,7 +17,11 @@
         "skipInstall": true
       },
       {
-        "name": "template-module@beta",
+        "name": "email@beta",
+        "skipInstall": true
+      },
+      {
+        "name": "logging@beta",
         "skipInstall": true
       }
     ],

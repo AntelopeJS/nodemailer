@@ -1,6 +1,11 @@
 {
   "name": "playground",
   "version": "1.0.0",
+  "logging": {
+    "channelFilter": {
+      "*": "trace"
+    }
+  },
   "modules": {
     "playground": {
       "source": {
@@ -14,6 +19,9 @@
         "type": "local",
         "path": "..",
         "installCommand": ["npx tsc"]
+      },
+      "config": {
+        "ethereal": true
       }
     }
   }
