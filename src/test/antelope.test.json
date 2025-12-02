@@ -1,0 +1,23 @@
+{
+  "cacheFolder": ".antelope/cache",
+  "logging": {
+    "channelFilter": {
+      "*": "INFO"
+    }
+  },
+  "modules": {
+    "local": {
+      "source": {
+        "type": "local",
+        "path": "."
+      },
+      "config": {
+        "ethereal": true,
+        "defaultSender": {
+          "email": "email-test@antelopejs.com",
+          "name": "AntelopeJS Test"
+        }
+      }
+    }
+  }
+}
