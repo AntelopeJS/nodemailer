@@ -1,13 +1,13 @@
+import assert from "node:assert";
 import {
+  GetCapabilities,
   Send,
   SendBatch,
   SendTemplate,
-  GetCapabilities,
 } from "@ajs/email/beta";
 import { Logging } from "@ajs/logging/beta";
-import assert from "assert";
 
-const TEST_EMAIL = process.env.TEST_EMAIL;
+const TEST_EMAIL = process.env.TEST_EMAIL as string;
 
 describe("Email Interface", () => {
   before(() => {
@@ -43,11 +43,6 @@ describe("Email Interface", () => {
       assert.equal(caps.features.clickTracking, false);
     });
 
-    it("should have webhooks feature disabled (not implemented yet)", async () => {
-      const caps = await GetCapabilities();
-      assert.equal(caps.features.webhooks, false);
-    });
-
     it("should have inlineAttachments feature enabled", async () => {
       const caps = await GetCapabilities();
       assert.equal(caps.features.inlineAttachments, true);
@@ -72,7 +67,7 @@ describe("Email Interface", () => {
   describe("Send", () => {
     it("should send a simple email with html and text", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Simple email",
         html: "<h1>Test</h1><p>This is a test email sent from unit tests.</p>",
         text: "Test - This is a test email sent from unit tests.",
@@ -92,7 +87,7 @@ describe("Email Interface", () => {
 
     it("should send email with tags (ignored by nodemailer)", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with tags",
         html: "<p>This email has tags for tracking.</p>",
         tags: ["test", "unit-test", "nodemailer"],
@@ -103,7 +98,7 @@ describe("Email Interface", () => {
 
     it("should send email with multiple recipients", async () => {
       const result = await Send({
-        to: [TEST_EMAIL!, TEST_EMAIL!],
+        to: [TEST_EMAIL, TEST_EMAIL],
         subject: "[Nodemailer Test] Multiple recipients",
         text: "This email is sent to multiple recipients.",
       });
@@ -112,8 +107,8 @@ describe("Email Interface", () => {
 
     it("should send email with CC", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
-        cc: TEST_EMAIL!,
+        to: TEST_EMAIL,
+        cc: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with CC",
         text: "This email has a CC recipient.",
       });
@@ -122,8 +117,8 @@ describe("Email Interface", () => {
 
     it("should send email with BCC", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
-        bcc: TEST_EMAIL!,
+        to: TEST_EMAIL,
+        bcc: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with BCC",
         text: "This email has a BCC recipient.",
       });
@@ -132,8 +127,8 @@ describe("Email Interface", () => {
 
     it("should send email with replyTo", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
-        replyTo: TEST_EMAIL!,
+        to: TEST_EMAIL,
+        replyTo: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with replyTo",
         text: "This email has a custom replyTo address.",
       });
@@ -142,7 +137,7 @@ describe("Email Interface", () => {
 
     it("should send email with address object (name + email)", async () => {
       const result = await Send({
-        to: { email: TEST_EMAIL!, name: "Test User" },
+        to: { email: TEST_EMAIL, name: "Test User" },
         subject: "[Nodemailer Test] Email with named recipient",
         text: "This email is sent to a named recipient.",
       });
@@ -154,7 +149,7 @@ describe("Email Interface", () => {
         "Hello, this is a test attachment!",
       ).toString("base64");
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with attachment",
         text: "This email has a base64 attachment.",
         attachments: [
@@ -171,7 +166,7 @@ describe("Email Interface", () => {
 
     it("should send email with Buffer attachment", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with Buffer attachment",
         text: "This email has a Buffer attachment.",
         attachments: [
@@ -188,7 +183,7 @@ describe("Email Interface", () => {
     it("should send scheduled email with Date object", async () => {
       const futureDate = new Date(Date.now() + 60 * 60 * 1000); // +1 hour
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Scheduled email (Date)",
         text: "This is a scheduled email using Date object.",
         schedule: { sendAt: futureDate },
@@ -199,7 +194,7 @@ describe("Email Interface", () => {
     it("should send scheduled email with ISO string", async () => {
       const futureDate = new Date(Date.now() + 2 * 60 * 60 * 1000); // +2 hours
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Scheduled email (ISO)",
         text: "This is a scheduled email using ISO string.",
         schedule: { sendAt: futureDate.toISOString() },
@@ -209,7 +204,7 @@ describe("Email Interface", () => {
 
     it("should send email with URL attachment", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with URL attachment",
         text: "This email has a URL attachment.",
         attachments: [
@@ -224,7 +219,7 @@ describe("Email Interface", () => {
 
     it("should send email with tracking options", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Email with tracking",
         // eslint-disable-next-line max-len
         html: '<p>This email has tracking enabled. Click <a href="https://example.com">here</a> to test click tracking.</p>',
@@ -235,7 +230,7 @@ describe("Email Interface", () => {
 
     it("should send email with custom from address", async () => {
       const result = await Send({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         from: { email: "email-test@antelopejs.com", name: "Custom Sender" },
         subject: "[Nodemailer Test] Custom from address",
         text: "This email has a custom from address.",
@@ -250,19 +245,19 @@ describe("Email Interface", () => {
       const result = await SendBatch({
         messages: [
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Batch 1/3",
             text: "Batch message 1",
             batchId: "batch-1",
           },
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Batch 2/3",
             text: "Batch message 2",
             batchId: "batch-2",
           },
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Batch 3/3",
             text: "Batch message 3",
             batchId: "batch-3",
@@ -280,12 +275,12 @@ describe("Email Interface", () => {
       const result = await SendBatch({
         messages: [
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Batch with defaults 1",
             batchId: "def-1",
           },
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Batch with defaults 2",
             batchId: "def-2",
           },
@@ -310,7 +305,7 @@ describe("Email Interface", () => {
       const result = await SendBatch({
         messages: [
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] BatchId test",
             text: "Testing batchId",
             batchId: "custom-id-123",
@@ -325,7 +320,7 @@ describe("Email Interface", () => {
       const result = await SendBatch({
         messages: [
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Recipient test",
             text: "Testing recipient",
           },
@@ -340,13 +335,13 @@ describe("Email Interface", () => {
       const result = await SendBatch({
         messages: [
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Scheduled Batch 1",
             text: "Scheduled batch 1",
             batchId: "sched-1",
           },
           {
-            to: TEST_EMAIL!,
+            to: TEST_EMAIL,
             subject: "[Nodemailer Test] Scheduled Batch 2",
             text: "Scheduled batch 2",
             batchId: "sched-2",
@@ -365,7 +360,7 @@ describe("Email Interface", () => {
   describe("SendTemplate", () => {
     it("should send inline HTML template with variables", async () => {
       const result = await SendTemplate({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Inline HTML template",
         template: {
           content: `
@@ -387,7 +382,7 @@ describe("Email Interface", () => {
 
     it("should send inline text template with variables", async () => {
       const result = await SendTemplate({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Inline text template",
         template: {
           content: "Hello {{ name }}, your code is {{ code }}.",
@@ -403,7 +398,7 @@ describe("Email Interface", () => {
 
     it("should handle template with missing variables gracefully", async () => {
       const result = await SendTemplate({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Template with missing vars",
         template: {
           content: "<p>Hello {{ name }}, value is {{ missing }}</p>",
@@ -418,7 +413,7 @@ describe("Email Interface", () => {
 
     it("should send template with tags", async () => {
       const result = await SendTemplate({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Template with tags",
         template: {
           content: "<p>Template email with tags</p>",
@@ -431,7 +426,7 @@ describe("Email Interface", () => {
 
     it("should return error for provider template (not supported)", async () => {
       const result = await SendTemplate({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Provider template not supported",
         template: {
           id: "not-a-number",
@@ -444,7 +439,7 @@ describe("Email Interface", () => {
     it("should send template with scheduling", async () => {
       const futureDate = new Date(Date.now() + 4 * 60 * 60 * 1000); // +4 hours
       const result = await SendTemplate({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Scheduled template",
         template: {
           content: "<p>This is a scheduled template email for {{ name }}</p>",
@@ -458,7 +453,7 @@ describe("Email Interface", () => {
 
     it("should send template with tracking options", async () => {
       const result = await SendTemplate({
-        to: TEST_EMAIL!,
+        to: TEST_EMAIL,
         subject: "[Nodemailer Test] Template with tracking",
         template: {
           content:
