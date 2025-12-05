@@ -1,9 +1,5 @@
 import {
   GetCapabilities,
-  OnBounced,
-  OnClicked,
-  OnDelivered,
-  OnOpened,
   Send,
   SendBatch,
   SendTemplate,
@@ -14,20 +10,6 @@ export function construct(_config: unknown): void {}
 
 export async function start(): Promise<void> {
   Logging.Info("=== Email Playground ===\n");
-
-  // Enregistrer les events
-  OnDelivered.register((e) =>
-    Logging.Info(`[Event] Delivered: ${e.messageId} to ${e.recipient}`),
-  );
-  OnBounced.register((e) =>
-    Logging.Warn(`[Event] Bounced: ${e.recipient} (${e.bounceType})`),
-  );
-  OnOpened.register((e) =>
-    Logging.Info(`[Event] Opened: ${e.messageId} by ${e.recipient}`),
-  );
-  OnClicked.register((e) =>
-    Logging.Info(`[Event] Clicked: ${e.url} by ${e.recipient}`),
-  );
 
   // Test GetCapabilities
   Logging.Info("--- GetCapabilities ---");
