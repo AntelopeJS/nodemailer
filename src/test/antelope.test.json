@@ -12,10 +12,11 @@
         "path": "."
       },
       "config": {
-        "ethereal": true,
-        "defaultSender": {
-          "email": "email-test@antelopejs.com",
-          "name": "AntelopeJS Test"
+        "host": "smtp.example.com",
+        "port": 587,
+        "secure": false,
+        "defaults": {
+          "from": "noreply@example.com"
         }
       }
     }
