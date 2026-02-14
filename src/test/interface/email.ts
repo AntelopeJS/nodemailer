@@ -1,14 +1,14 @@
 import assert from "node:assert";
+import Logging from "@ajs/logging/beta";
 import type { SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
 import nodemailer from "nodemailer";
 import sinon, { type SinonSandbox, type SinonStub } from "sinon";
-import Logging from "@ajs/logging/beta";
 import {
   GetCapabilities,
+  initTransporter,
   Send,
   SendBatch,
   SendTemplate,
-  initTransporter,
 } from "../../implementations/email/beta";
 import type { EmailParams } from "../../interfaces/email/beta";
 
@@ -188,7 +188,9 @@ describe("Email interface", () => {
   });
 
   it("sends emails with mapped nodemailer options", async () => {
-    const sendMailStub = sandbox.stub().resolves(createSentMessageInfo(MESSAGE_ID));
+    const sendMailStub = sandbox
+      .stub()
+      .resolves(createSentMessageInfo(MESSAGE_ID));
     await initializeTransporterWithStubs(sandbox, sendMailStub);
 
     const result = await Send(createSendParams());
@@ -221,7 +223,9 @@ describe("Email interface", () => {
   });
 
   it("uses configured default sender when sender is missing", async () => {
-    const sendMailStub = sandbox.stub().resolves(createSentMessageInfo(MESSAGE_ID));
+    const sendMailStub = sandbox
+      .stub()
+      .resolves(createSentMessageInfo(MESSAGE_ID));
     await initializeTransporterWithStubs(sandbox, sendMailStub);
 
     await Send({
@@ -287,7 +291,9 @@ describe("Email interface", () => {
   });
 
   it("renders inline templates before sending", async () => {
-    const sendMailStub = sandbox.stub().resolves(createSentMessageInfo(MESSAGE_ID));
+    const sendMailStub = sandbox
+      .stub()
+      .resolves(createSentMessageInfo(MESSAGE_ID));
     await initializeTransporterWithStubs(sandbox, sendMailStub);
 
     const result = await SendTemplate({
@@ -309,7 +315,9 @@ describe("Email interface", () => {
   });
 
   it("returns NOT_SUPPORTED for provider templates", async () => {
-    const sendMailStub = sandbox.stub().resolves(createSentMessageInfo(MESSAGE_ID));
+    const sendMailStub = sandbox
+      .stub()
+      .resolves(createSentMessageInfo(MESSAGE_ID));
     await initializeTransporterWithStubs(sandbox, sendMailStub);
 
     const result = await SendTemplate({
@@ -326,12 +334,16 @@ describe("Email interface", () => {
   });
 
   it("initializes ethereal transporter when configured", async () => {
-    const sendMailStub = sandbox.stub().resolves(createSentMessageInfo(MESSAGE_ID));
+    const sendMailStub = sandbox
+      .stub()
+      .resolves(createSentMessageInfo(MESSAGE_ID));
     const createTransportStub = sandbox
       .stub(nodemailer, "createTransport")
       .returns(createTransporter(sendMailStub));
 
-    sandbox.stub(nodemailer, "createTestAccount").resolves(createEtherealAccount());
+    sandbox
+      .stub(nodemailer, "createTestAccount")
+      .resolves(createEtherealAccount());
     sandbox.stub(nodemailer, "getTestMessageUrl").returns(PREVIEW_URL);
     sandbox.stub(Logging, "Info");
 

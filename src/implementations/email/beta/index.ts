@@ -18,9 +18,9 @@ import Logging from "@ajs/logging/beta";
 import nodemailer, {
   type SendMailOptions,
   type SentMessageInfo,
-  type TransportOptions,
   type Transporter,
 } from "nodemailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const PROVIDER_NAME = "nodemailer";
 const EMAIL_PREFIX = "[Email]";
@@ -147,7 +147,7 @@ function validateConfig(config: unknown): ResolvedNodemailerConfig {
 
 function buildEtherealTransportOptions(
   account: EtherealAccount,
-): TransportOptions {
+): SMTPTransport.Options {
   return {
     host: ETHEREAL_HOST,
     port: ETHEREAL_PORT,
@@ -161,8 +161,8 @@ function buildEtherealTransportOptions(
 
 function buildStandardTransportOptions(
   config: StandardNodemailerConfig,
-): TransportOptions {
-  const transportOptions: TransportOptions = {
+): SMTPTransport.Options {
+  const transportOptions: SMTPTransport.Options = {
     host: config.host,
     port: config.port,
     secure: config.secure ?? config.port === SECURE_PORT,
@@ -190,13 +190,17 @@ function getTransporter(): Transporter {
 
 async function initializeEtherealTransporter(): Promise<void> {
   const testAccount = await nodemailer.createTestAccount();
-  setTransporter(nodemailer.createTransport(buildEtherealTransportOptions(testAccount)));
+  setTransporter(
+    nodemailer.createTransport(buildEtherealTransportOptions(testAccount)),
+  );
   setDefaultFrom(testAccount.user);
   Logging.Info(`${EMAIL_PREFIX} Ethereal test account: ${testAccount.user}`);
 }
 
 function initializeStandardTransporter(config: StandardNodemailerConfig): void {
-  setTransporter(nodemailer.createTransport(buildStandardTransportOptions(config)));
+  setTransporter(
+    nodemailer.createTransport(buildStandardTransportOptions(config)),
+  );
   setDefaultFrom(config.defaults?.from);
 }
 
@@ -216,7 +220,9 @@ function formatAddress(address: EmailAddress): string {
   return address.name ? `"${address.name}" <${address.email}>` : address.email;
 }
 
-function formatRequiredAddresses(addresses: EmailAddress | EmailAddress[]): string {
+function formatRequiredAddresses(
+  addresses: EmailAddress | EmailAddress[],
+): string {
   if (Array.isArray(addresses)) {
     return addresses.map(formatAddress).join(ADDRESS_SEPARATOR);
   }
@@ -270,7 +276,7 @@ function mapAttachment(attachment: Attachment): NodemailerAttachment {
   }
 
   if ("url" in attachment) {
-    mappedAttachment.href = attachment.url;
+    mappedAttachment.path = attachment.url;
   }
 
   return mappedAttachment;
@@ -315,16 +321,28 @@ function buildMailOptions(params: EmailParams): SendMailOptions {
   assignMailOption(mailOptions, "from", fromAddress);
   assignMailOption(mailOptions, "cc", formatOptionalAddresses(params.cc));
   assignMailOption(mailOptions, "bcc", formatOptionalAddresses(params.bcc));
-  assignMailOption(mailOptions, "replyTo", formatOptionalAddresses(params.replyTo));
+  assignMailOption(
+    mailOptions,
+    "replyTo",
+    formatOptionalAddresses(params.replyTo),
+  );
   assignMailOption(mailOptions, "text", params.text);
   assignMailOption(mailOptions, "html", params.html);
   assignMailOption(mailOptions, "priority", mapPriority(params.priority));
   assignMailOption(mailOptions, "messageId", params.messageId);
   assignMailOption(mailOptions, "inReplyTo", params.inReplyTo);
-  assignMailOption(mailOptions, "references", normalizeReferences(params.references));
+  assignMailOption(
+    mailOptions,
+    "references",
+    normalizeReferences(params.references),
+  );
 
   if (params.attachments && params.attachments.length > 0) {
-    assignMailOption(mailOptions, "attachments", params.attachments.map(mapAttachment));
+    assignMailOption(
+      mailOptions,
+      "attachments",
+      params.attachments.map(mapAttachment),
+    );
   }
 
   return mailOptions;
@@ -509,7 +527,9 @@ export async function SendBatch(
     const result = await Send(mergedParams);
     const recipient = getFirstRecipient(mergedParams.to);
 
-    state.responses.push(createBatchMessageResponse(result, message, index, recipient));
+    state.responses.push(
+      createBatchMessageResponse(result, message, index, recipient),
+    );
     updateBatchState(state, result);
 
     if (!result.success && !continueOnError) {
@@ -533,7 +553,10 @@ export async function SendTemplate(
     return createNotSupportedResponse();
   }
 
-  const renderedTemplate = renderTemplate(params.template, params.variables ?? {});
+  const renderedTemplate = renderTemplate(
+    params.template,
+    params.variables ?? {},
+  );
   const templateParams = createTemplateEmailParams(
     params,
     params.template,
