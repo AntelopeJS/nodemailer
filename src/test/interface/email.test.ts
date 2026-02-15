@@ -219,7 +219,7 @@ describe("Email interface", () => {
     assert.equal(Buffer.isBuffer(firstAttachment.content), true);
     assert.equal(secondAttachment.encoding, "base64");
     assert.equal(secondAttachment.content, BASE64_CONTENT);
-    assert.equal(thirdAttachment.href, URL_ATTACHMENT);
+    assert.equal(thirdAttachment.path, URL_ATTACHMENT);
   });
 
   it("uses configured default sender when sender is missing", async () => {
