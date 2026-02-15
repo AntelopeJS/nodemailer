@@ -62,7 +62,7 @@ interface EtherealTransportOptions {
 interface AttachmentAssertion {
   content?: unknown;
   encoding?: string;
-  href?: string;
+  path?: string;
 }
 
 type EtherealAccount = Awaited<ReturnType<typeof nodemailer.createTestAccount>>;
