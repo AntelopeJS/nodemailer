@@ -8,10 +8,11 @@
     "dev": "ajs project run -w -p playground",
     "generate": "ajs module exports generate",
     "prepare": "ajs module imports install",
+    "prepack": "pnpm run build",
     "format": "biome format --write .",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "test": "npx tsc && set -a && source .env && ajs module test ."
+    "test": "ajs module test ."
   },
   "antelopeJs": {
     "exportsPath": "dist/interfaces",
