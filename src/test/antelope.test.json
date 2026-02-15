@@ -9,7 +9,8 @@
     "local": {
       "source": {
         "type": "local",
-        "path": "."
+        "path": ".",
+        "installCommand": ["npx tsc"]
       },
       "config": {
         "host": "smtp.example.com",
