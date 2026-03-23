@@ -1,12 +1,12 @@
-import { ImplementInterface } from "@ajs/core/beta";
-import { initTransporter } from "./implementations/email/beta";
+import { ImplementInterface } from "@antelopejs/interface-core";
+import { initTransporter } from "./implementations/email";
 
 export async function construct(config: unknown): Promise<void> {
   await initTransporter(config);
 
   void ImplementInterface(
-    await import("./interfaces/email/beta"),
-    await import("./implementations/email/beta"),
+    await import("@antelopejs/interface-email"),
+    await import("./implementations/email"),
   );
 }
 

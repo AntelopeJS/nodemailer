@@ -2,50 +2,47 @@
   "name": "@antelopejs/nodemailer",
   "version": "0.0.1",
   "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "rimraf dist && tsc",
-    "dev:prepare": "cd playground && ajs module imports install",
     "dev": "ajs project run -w -p playground",
-    "generate": "ajs module exports generate",
-    "prepare": "ajs module imports install",
     "prepack": "pnpm run build",
     "format": "biome format --write .",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "test": "ajs module test ."
+    "test": "pnpm run build && ajs module test .",
+    "release": "pnpm run lint && pnpm run prepack && release-it"
   },
   "antelopeJs": {
-    "exportsPath": "dist/interfaces",
-    "imports": [
-      "core@beta",
-      "logging@beta"
+    "implements": [
+      "@antelopejs/interface-email"
     ],
-    "baseUrl": "dist",
-    "paths": {
-      "@/*": [
-        "*"
-      ]
-    },
-    "importsOptional": [],
-    "test": {
-      "project": "src/test/antelope.test.json",
-      "folder": "dist/test"
-    }
+    "test": "src/test/antelope.test.ts"
   },
   "dependencies": {
+    "@antelopejs/interface-core": "^0.0.2",
+    "@antelopejs/interface-email": "^0.0.2",
     "nodemailer": "^6.9.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.2",
-    "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
-    "rimraf": "^6.0.1",
     "@types/node": "^22.14.1",
     "@types/nodemailer": "^6.4.0",
     "@types/sinon": "^21.0.0",
-    "chai": "^6.2.1",
+    "rimraf": "^6.0.1",
     "sinon": "^21.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "release-it": "^19.2.4",
+    "release-it-changelogen": "^0.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "packageManager": "pnpm@10.8.1"
 }

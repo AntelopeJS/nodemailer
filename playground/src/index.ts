@@ -1,10 +1,10 @@
+import Logging from "@antelopejs/interface-core/logging";
 import {
   GetCapabilities,
   Send,
   SendBatch,
   SendTemplate,
-} from "@ajs/email/beta";
-import Logging from "@ajs/logging/beta";
+} from "@antelopejs/interface-email";
 
 export function construct(_config: unknown): void {}
 

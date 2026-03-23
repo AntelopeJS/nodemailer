@@ -1,3 +1,4 @@
+import { Logging } from "@antelopejs/interface-core/logging";
 import type {
   Attachment,
   BatchEmailMessage,
@@ -13,8 +14,7 @@ import type {
   ProviderFeatures,
   ProviderTemplate,
   TemplateEmailParams,
-} from "@ajs/email/beta";
-import Logging from "@ajs/logging/beta";
+} from "@antelopejs/interface-email";
 import nodemailer, {
   type SendMailOptions,
   type SentMessageInfo,
