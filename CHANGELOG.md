@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.3
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.2...v0.0.3)
+
+### 🏡 Chore
+
+- Update dependencies ([fc91cca](https://github.com/AntelopeJS/nodemailer/commit/fc91cca))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli <upd4ting@gmail.com>
+
 ## v0.0.2
 
 
