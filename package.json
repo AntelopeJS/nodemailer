@@ -25,7 +25,7 @@
     "test": "src/test/antelope.test.ts"
   },
   "dependencies": {
-    "@antelopejs/interface-core": "^0.0.5",
+    "@antelopejs/interface-core": "^0.0.6",
     "@antelopejs/interface-email": "^0.0.4",
     "nodemailer": "^6.10.1"
   },
