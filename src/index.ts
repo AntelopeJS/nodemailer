@@ -1,4 +1,5 @@
 import { ImplementInterface } from "@antelopejs/interface-core";
+
 import { initTransporter } from "./implementations/email";
 
 export async function construct(config: unknown): Promise<void> {

@@ -1,4 +1,10 @@
 import { Logging } from "@antelopejs/interface-core/logging";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
+import nodemailer, {
+  type SendMailOptions,
+  type SentMessageInfo,
+  type Transporter,
+} from "nodemailer";
 import type {
   Attachment,
   BatchEmailMessage,
@@ -15,12 +21,6 @@ import type {
   ProviderTemplate,
   TemplateEmailParams,
 } from "@antelopejs/interface-email";
-import nodemailer, {
-  type SendMailOptions,
-  type SentMessageInfo,
-  type Transporter,
-} from "nodemailer";
-import type SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const PROVIDER_NAME = "nodemailer";
 const EMAIL_PREFIX = "[Email]";

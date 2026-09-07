@@ -1,9 +1,10 @@
 import assert from "node:assert";
+import nodemailer from "nodemailer";
 import { Logging } from "@antelopejs/interface-core/logging";
 import type { EmailParams } from "@antelopejs/interface-email";
-import type { SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
-import nodemailer from "nodemailer";
 import sinon, { type SinonSandbox, type SinonStub } from "sinon";
+import type { SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
+
 import {
   GetCapabilities,
   initTransporter,
