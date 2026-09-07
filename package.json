@@ -8,6 +8,10 @@
       "default": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "rimraf dist && tsc",
     "dev": "ajs project run -w -p playground",
@@ -19,12 +23,6 @@
     "release": "pnpm run lint && pnpm run prepack && release-it",
     "format:check": "oxfmt --check .",
     "knip": "knip"
-  },
-  "antelopeJs": {
-    "implements": [
-      "@antelopejs/interface-email"
-    ],
-    "test": "src/test/antelope.test.ts"
   },
   "dependencies": {
     "@antelopejs/interface-core": ">=0.0.6 <1.0.0",
@@ -48,9 +46,11 @@
     "sinon": "^21.0.3",
     "typescript": "^5.9.3"
   },
-  "publishConfig": {
-    "access": "public",
-    "provenance": true
-  },
-  "packageManager": "pnpm@10.8.1"
+  "packageManager": "pnpm@10.8.1",
+  "antelopeJs": {
+    "implements": [
+      "@antelopejs/interface-email"
+    ],
+    "test": "src/test/antelope.test.ts"
+  }
 }
