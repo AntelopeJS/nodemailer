@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## v0.0.4
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.3...v0.0.4)
@@ -18,7 +17,6 @@
 - Antony Rizzitelli <upd4ting@gmail.com>
 
 ## v0.0.2
-
 
 ### 🚀 Enhancements
 
@@ -53,4 +51,3 @@
 - Antony Rizzitelli <upd4ting@gmail.com>
 - Glastis ([@Glastis](http://github.com/Glastis))
 - MrSociety404 <fabrice@altab.be>
-
