@@ -1,8 +1,11 @@
 # @antelopejs/nodemailer
 
-[![npm](https://img.shields.io/npm/v/@antelopejs/nodemailer)](https://www.npmjs.com/package/@antelopejs/nodemailer)
-[![CI](https://github.com/AntelopeJS/nodemailer/actions/workflows/ci.yml/badge.svg)](https://github.com/AntelopeJS/nodemailer/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+<div align="center">
+<a href="https://www.npmjs.com/package/@antelopejs/nodemailer"><img alt="NPM version" src="https://img.shields.io/npm/v/@antelopejs/nodemailer.svg?style=for-the-badge&labelColor=000000"></a>
+<a href="./LICENSE"><img alt="License" src="https://img.shields.io/npm/l/@antelopejs/nodemailer.svg?style=for-the-badge&labelColor=000000"></a>
+<a href="https://discord.gg/sjK28QHrA7"><img src="https://img.shields.io/badge/Discord-18181B?logo=discord&style=for-the-badge&color=000000" alt="Discord"></a>
+<a href="https://antelopejs.com"><img src="https://img.shields.io/badge/Docs-18181B?style=for-the-badge&color=000000" alt="Documentation"></a>
+</div>
 
 Nodemailer implementation of the AntelopeJS email interface. It sends single
 or batched messages through SMTP, supports inline templates and attachments,
