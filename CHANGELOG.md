@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.0.5
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.4...v0.0.5)
+
+### 🩹 Fixes
+
+- **deps:** Require current email interface ([#11](https://github.com/AntelopeJS/nodemailer/pull/11))
+
+### 📖 Documentation
+
+- Document the nodemailer module ([#9](https://github.com/AntelopeJS/nodemailer/pull/9))
+
+### 🏡 Chore
+
+- Replace Biome with oxlint, oxfmt and Knip ([#8](https://github.com/AntelopeJS/nodemailer/pull/8))
+
+### 🤖 CI
+
+- Standardize npm releases ([#7](https://github.com/AntelopeJS/nodemailer/pull/7))
+- Use shared npm release workflow ([#10](https://github.com/AntelopeJS/nodemailer/pull/10))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli <rizzitelli.antony@pm.me>
+- Thomas ([@Thomasims](http://github.com/Thomasims))
+
 ## v0.0.4
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.3...v0.0.4)
