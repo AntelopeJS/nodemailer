@@ -12,7 +12,7 @@ importers:
         specifier: '>=0.0.6 <1.0.0'
         version: 0.0.11
       '@antelopejs/interface-email':
-        specifier: '>=0.0.4 <1.0.0'
+        specifier: '>=0.0.5 <1.0.0'
         version: 0.0.5(@antelopejs/interface-core@0.0.11)
       nodemailer:
         specifier: ^6.10.1
@@ -970,6 +970,7 @@ packages:
   basic-ftp@5.2.0:
     resolution: {integrity: sha512-VoMINM2rqJwJgfdHq6RiUudKt2BV+FY5ZFezP/ypmwayk68+NzzAQy4XXLlqsGD4MCzq3DrmNFD/uUmBJuGoXw==}
     engines: {node: '>=10.0.0'}
+    deprecated: Security vulnerability fixed in 5.2.1, please upgrade
 
   before-after-hook@4.0.0:
     resolution: {integrity: sha512-q6tR3RPqIB1pMiTRMFcZwuG5T8vwp+vUvEG0vuI6B+Rikh5BfPp2fQ82c925FOs+b0lcFQ8CFrL+KbilfZFhOQ==}
@@ -2005,11 +2006,6 @@ packages:
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
-  yaml@2.8.3:
-    resolution: {integrity: sha512-AvbaCLOO2Otw/lW5bmh9d/WEdcDFdQp2Z2ZUH3pX9U2ihyUY0nvLv7J6TrWowklRGPYbB/IuIMfYgxaCPg5Bpg==}
-    engines: {node: '>= 14.6'}
-    hasBin: true
-
   yaml@2.9.0:
     resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
     engines: {node: '>= 14.6'}
@@ -2802,7 +2798,7 @@ snapshots:
       scule: 1.3.0
       semver: 7.7.3
       std-env: 3.10.0
-      yaml: 2.8.3
+      yaml: 2.9.0
     transitivePeerDependencies:
       - magicast
 
@@ -3846,8 +3842,6 @@ snapshots:
       is-wsl: 3.1.1
 
   yallist@4.0.0: {}
-
-  yaml@2.8.3: {}
 
   yaml@2.9.0: {}
 
