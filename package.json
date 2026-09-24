@@ -37,12 +37,13 @@
     "knip": "knip"
   },
   "dependencies": {
-    "@antelopejs/interface-core": ">=0.0.6 <1.0.0",
+    "@antelopejs/interface-core": ">=0.1.1 <1.0.0",
     "@antelopejs/interface-email": ">=0.0.5 <1.0.0",
     "nodemailer": "^6.10.1"
   },
   "devDependencies": {
-    "@antelopejs/tooling-configs": "^0.0.4",
+    "@antelopejs/core": "^1.9.1",
+    "@antelopejs/tooling-configs": "^0.0.6",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.19.15",
     "@types/nodemailer": "^6.4.23",
