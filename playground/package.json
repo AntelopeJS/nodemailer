@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "ajs project run -w --verbose %",
+    "dev": "ajs project dev -w --verbose",
     "build": "rimraf dist && tsc"
   },
   "dependencies": {
