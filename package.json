@@ -60,6 +60,12 @@
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.8.1",
+  "pnpm": {
+    "overrides": {
+      "tinypool@<2.1.2": "^2.1.2",
+      "undici@>=6.0.0 <6.28.1": "^6.28.1"
+    }
+  },
   "antelopeJs": {
     "implements": [
       "@antelopejs/interface-email"
