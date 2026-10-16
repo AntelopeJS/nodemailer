@@ -86,6 +86,11 @@ const result = await Send({
 
 `result.success` tells whether the SMTP server accepted the message; `result.error` describes a failure.
 
+## Documentation
+
+- [Email](https://github.com/AntelopeJS/interface-email/tree/main/docs): the `@antelopejs/interface-email` contract this module implements
+- [Configuration](https://framework.antelopejs.com/docs/concepts/configuration): module sources, `config` blocks and config variables in `antelope.config.ts`
+
 ## Compatibility
 
 | Package                       | Supported range  |
