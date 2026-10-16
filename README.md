@@ -1,72 +1,82 @@
 # @antelopejs/nodemailer
 
 <div align="center">
-<a href="https://www.npmjs.com/package/@antelopejs/nodemailer"><img alt="NPM version" src="https://img.shields.io/npm/v/@antelopejs/nodemailer.svg?style=for-the-badge&labelColor=000000"></a>
-<a href="./LICENSE"><img alt="License" src="https://img.shields.io/npm/l/@antelopejs/nodemailer.svg?style=for-the-badge&labelColor=000000"></a>
+<a href="https://www.npmjs.com/package/@antelopejs/nodemailer"><img alt="npm" src="https://img.shields.io/npm/v/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
+<a href="./LICENSE"><img alt="License" src="https://img.shields.io/npm/l/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
 <a href="https://discord.gg/sjK28QHrA7"><img src="https://img.shields.io/badge/Discord-18181B?logo=discord&style=for-the-badge&color=000000" alt="Discord"></a>
-<a href="https://antelopejs.com"><img src="https://img.shields.io/badge/Docs-18181B?style=for-the-badge&color=000000" alt="Documentation"></a>
+<a href="https://github.com/AntelopeJS/interface-email/tree/main/docs"><img src="https://img.shields.io/badge/Docs-18181B?style=for-the-badge&color=000000" alt="Documentation"></a>
 </div>
 
-Nodemailer implementation of the AntelopeJS email interface. It sends single
-or batched messages through SMTP, supports inline templates and attachments,
-and can create an Ethereal test account for local development.
+The AntelopeJS email module: it sends the email interface's messages over SMTP with [Nodemailer](https://nodemailer.com).
 
-## Installation
+## Interfaces
+
+| Interface                                                                      | Documentation                                                         |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| [`@antelopejs/interface-email`](https://github.com/AntelopeJS/interface-email) | [Email](https://github.com/AntelopeJS/interface-email/tree/main/docs) |
+
+The module implements `Send`, `SendBatch`, `SendTemplate` with inline templates, attachments, reply headers and priorities. Provider-hosted templates are not supported: `SendTemplate` with a template ID returns a `NOT_SUPPORTED` error.
+
+## Install
 
 ```bash
-pnpm add @antelopejs/nodemailer
+ajs project modules add @antelopejs/nodemailer
 ```
 
-The module implements
-[`@antelopejs/interface-email`](https://github.com/AntelopeJS/interface-email).
+The module ships no default configuration: add a `config` block before starting the project.
 
 ## Configuration
 
-Add the module to `antelope.config.ts`:
-
-```ts
+```typescript [antelope.config.ts]
 import { defineConfig } from "@antelopejs/interface-core/config";
 
 export default defineConfig({
-  name: "my-app",
+  name: "my-project",
   modules: {
-    email: {
+    nodemailer: {
       source: {
         type: "package",
         package: "@antelopejs/nodemailer",
+        version: "^0.0.5",
       },
       config: {
         host: "smtp.example.com",
         port: 587,
         secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD,
-        },
-        defaults: {
-          from: "noreply@example.com",
-        },
+        auth: { user: "smtp-user", pass: "smtp-password" },
+        defaults: { from: "noreply@example.com" },
       },
     },
+  },
+  envOverrides: {
+    SMTP_PASSWORD: "modules.nodemailer.config.auth.pass",
   },
 });
 ```
 
-When `secure` is omitted, port 465 enables it automatically. Authentication is
-optional for SMTP servers that do not require it.
+| Key             | Description                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------ |
+| `host`          | SMTP host. Required unless `ethereal` is `true`.                                                             |
+| `port`          | SMTP port, as a number. Required unless `ethereal` is `true`.                                                |
+| `secure`        | Use TLS from the start of the connection. Defaults to `true` on port 465 and `false` otherwise.              |
+| `auth`          | Optional SMTP credentials, `{ user, pass }`. Both must be non-empty when set.                                |
+| `defaults.from` | Sender used when a message has no `from`.                                                                    |
+| `ethereal`      | Set to `true` in development to send through a temporary [Ethereal](https://ethereal.email) account instead. |
 
-For local development, replace the SMTP options with `ethereal: true`. The
-module creates a temporary Ethereal account and logs its address.
+With `ethereal: true`, the module ignores the other keys, creates an account at startup, logs its address and uses it as the default sender. Each sent message logs a preview URL where you can read it.
 
-## Usage
+## Quick start
 
-Use the provider-independent email interface from application modules:
+In the module that sends email, add the interface:
 
-```ts
+```bash
+pnpm add @antelopejs/interface-email
+```
+
+```typescript
 import { Send } from "@antelopejs/interface-email";
 
 const result = await Send({
-  from: "noreply@example.com",
   to: "user@example.com",
   subject: "Welcome",
   text: "Your account is ready.",
@@ -74,23 +84,30 @@ const result = await Send({
 });
 ```
 
-The implementation also supports `SendBatch`, inline `SendTemplate` calls,
-attachments, reply headers, and message priorities. Provider-hosted templates
-are not supported by Nodemailer.
+`result.success` tells whether the SMTP server accepted the message; `result.error` describes a failure.
 
-## Development
+## Compatibility
+
+| Package                       | Supported range  |
+| ----------------------------- | ---------------- |
+| `@antelopejs/interface-email` | `>=0.0.5 <1.0.0` |
+| `@antelopejs/interface-core`  | `>=0.1.1 <1.0.0` |
+
+The module is developed and tested against `@antelopejs/core` `^1.13.4` on Node.js 24, with `nodemailer` `^6.10.1`.
+
+## Contributing
 
 ```bash
 pnpm install
+pnpm dev            # run the playground/ project with an Ethereal account
 pnpm lint
 pnpm format:check
-pnpm test
+pnpm knip
+pnpm test           # build, then ajs module test
 ```
 
-See the organization-wide
-[contribution guidelines](https://github.com/AntelopeJS/.github/blob/main/CONTRIBUTING.md)
-and [security policy](SECURITY.md).
+Read the [contribution guidelines](CONTRIBUTING.md) before opening a pull request.
 
 ## License
 
-Apache-2.0
+[Apache-2.0](LICENSE)
