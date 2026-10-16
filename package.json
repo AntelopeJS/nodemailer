@@ -1,17 +1,21 @@
 {
   "name": "@antelopejs/nodemailer",
   "version": "0.0.5",
-  "description": "Nodemailer implementation of the AntelopeJS email interface",
+  "description": "SMTP email module for AntelopeJS, implementing the Email interface with Nodemailer",
   "keywords": [
     "antelopejs",
     "email",
     "nodemailer",
     "smtp"
   ],
+  "homepage": "https://github.com/AntelopeJS/interface-email/tree/main/docs",
+  "bugs": {
+    "url": "https://github.com/AntelopeJS/nodemailer/issues"
+  },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AntelopeJS/nodemailer.git"
+    "url": "git+https://github.com/AntelopeJS/nodemailer.git"
   },
   "main": "dist/index.js",
   "exports": {
