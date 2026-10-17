@@ -1,6 +1,6 @@
 {
   "name": "@antelopejs/nodemailer",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "SMTP email module for AntelopeJS, implementing the Email interface with Nodemailer",
   "keywords": [
     "antelopejs",

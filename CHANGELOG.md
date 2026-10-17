@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.0.6
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.5...v0.0.6)
+
+### 📖 Documentation
+
+- Rewrite the README ([#20](https://github.com/AntelopeJS/nodemailer/pull/20))
+- **agents:** Simplify repository guidance ([#21](https://github.com/AntelopeJS/nodemailer/pull/21))
+
+### 🏡 Chore
+
+- Align community files with the organization defaults ([#12](https://github.com/AntelopeJS/nodemailer/pull/12))
+- Remove .git-blame-ignore-revs ([#13](https://github.com/AntelopeJS/nodemailer/pull/13))
+- **playground:** Update antelope dependencies to latest ([#16](https://github.com/AntelopeJS/nodemailer/pull/16))
+
+### 🤖 CI
+
+- **release:** Release next from a dedicated branch and restore requireCommits ([#14](https://github.com/AntelopeJS/nodemailer/pull/14))
+- **release:** Reference the shared release workflows through v1 ([#15](https://github.com/AntelopeJS/nodemailer/pull/15))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli <rizzitelli.antony@pm.me>
+
 ## v0.0.5
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.4...v0.0.5)
