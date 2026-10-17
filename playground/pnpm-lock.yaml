@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@antelopejs/interface-core':
-        specifier: '>=0.1.1 <1.0.0'
-        version: 0.1.1
+        specifier: '>=0.2.4 <1.0.0'
+        version: 0.2.4
       '@antelopejs/interface-email':
-        specifier: '>=0.0.5 <1.0.0'
-        version: 0.0.5(@antelopejs/interface-core@0.1.1)
+        specifier: '>=0.0.6 <1.0.0'
+        version: 0.0.6(@antelopejs/interface-core@0.2.4)
     devDependencies:
       '@types/node':
         specifier: ^22.14.1
@@ -27,13 +27,13 @@ importers:
 
 packages:
 
-  '@antelopejs/interface-core@0.1.1':
-    resolution: {integrity: sha512-nGxElt51KGWIwGsUcFdGT7ikQEqDB+mLj4NQ/eFL/DI1+j65GJqq9PdkVT4x3/YKchNA48iMbzXyW7bKUsQ8Iw==}
+  '@antelopejs/interface-core@0.2.4':
+    resolution: {integrity: sha512-2qF6/KwahCQvvNuC/piUvPWD4wq2Npmco941HMg2/bMBoJKbhMH16WcXXRvPYznNSkU0U+6vqK6KE+2N5NojSA==}
 
-  '@antelopejs/interface-email@0.0.5':
-    resolution: {integrity: sha512-VVF4p/KRb07uCyse3WzKU1MbYFK1Eoi2L22ID05uaom8qy/TOPVy7KjFGg/VoHITjpwa/x6+L25EwrlG6lo9Cg==}
+  '@antelopejs/interface-email@0.0.6':
+    resolution: {integrity: sha512-GpMv5SQoWKQlxJTsHqMzljJCFKoRnHqLR+OmxaYmsxw0ur9Lzugq+oZpXnUnzaxAG1VX3MiNFrD3CT4BorgYDQ==}
     peerDependencies:
-      '@antelopejs/interface-core': '>=0.0.3 <1.0.0'
+      '@antelopejs/interface-core': '>=0.2.4 <1.0.0'
 
   '@types/node@22.17.1':
     resolution: {integrity: sha512-y3tBaz+rjspDTylNjAX37jEC3TETEFGNJL6uQDxwF9/8GLLIjW1rvVHlynyuUKMnMr1Roq8jOv3vkopBjC4/VA==}
@@ -87,13 +87,13 @@ packages:
 
 snapshots:
 
-  '@antelopejs/interface-core@0.1.1':
+  '@antelopejs/interface-core@0.2.4':
     dependencies:
       reflect-metadata: 0.2.2
 
-  '@antelopejs/interface-email@0.0.5(@antelopejs/interface-core@0.1.1)':
+  '@antelopejs/interface-email@0.0.6(@antelopejs/interface-core@0.2.4)':
     dependencies:
-      '@antelopejs/interface-core': 0.1.1
+      '@antelopejs/interface-core': 0.2.4
 
   '@types/node@22.17.1':
     dependencies:
