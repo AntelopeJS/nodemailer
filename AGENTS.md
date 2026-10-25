@@ -1,16 +1,64 @@
-# Agent guidance
+# nodemailer
 
-## Code conventions
+The AntelopeJS module that implements `@antelopejs/interface-email` over SMTP with Nodemailer, published as `@antelopejs/nodemailer`.
 
-- Write code, identifiers, and comments in English.
-- Use pnpm for package management and repository scripts.
-- Follow the repository's lint and formatting configuration.
-- Prefer the smallest change that solves the task; generalize for an existing need.
-- Keep functions focused. Extract helpers when they clarify a responsibility, not just to meet a line count.
-- Explain non-obvious constraints and decisions in comments; avoid restating the code. Document public contracts with TSDoc.
-- Use objects, maps, or arrays instead of `switch/case`.
-- Use named interfaces or types instead of anonymous object types.
-- Give non-obvious values named constants.
-- Prefer early returns to deeply nested branches, and reuse existing logic rather than duplicating it.
-- Name identifiers for their role; use boolean names such as `isActive` or `shouldRefresh`.
-- In index files, prefer `export * from './module'` over named re-exports.
+## Layout
+
+- `src/index.ts` holds the module lifecycle (`construct`, `start`, `stop`, `destroy`). `construct` builds the transporter from the module config and registers the implementation.
+- `src/implementations/email/index.ts` implements the interface functions (`Send`, `SendBatch`, `SendTemplate`, `GetCapabilities`).
+- `playground/` is a separate AntelopeJS project with its own `package.json` and `pnpm-lock.yaml`. It loads this module with `ethereal: true` and sends real messages to an Ethereal account.
+
+## Versioning
+
+`@antelopejs/interface-core` and `@antelopejs/interface-email` are dependencies with a `>=minimum <1.0.0` range. When you raise a minimum, raise the same range in `playground/package.json` and the compatibility table in `README.md`, and update both lockfiles.
+
+## Tests
+
+- `pnpm test` builds `dist` once, then runs `ajs module test .`. Run the tests through `pnpm test`: the test project has no `installCommand`, so a bare `ajs module test .` loads whatever `dist` already holds. `src/test/antelope.test.ts` (`antelopeJs.test` in `package.json`) loads the built module with a placeholder SMTP config and runs the compiled suites in `dist/test`. The suites stub Nodemailer with sinon, so no SMTP server or network is needed.
+- `pnpm run checks` does not run the playground. Run it with `pnpm install --dir playground`, then `pnpm dev`; it needs network access to Ethereal.
+
+<!-- antelopejs-guardrails:start -->
+<!-- Managed by @antelopejs/tooling-configs. `antelopejs-sync` rewrites everything between these markers; write repository-specific guidance outside them. -->
+
+## Guardrails
+
+Finish every change with `pnpm run checks`. It runs typecheck, lint, format, knip, tests, size, ratchet, and sync, and prints only what failed. The change is done when it prints no failure.
+
+The tools enforce most rules, listed in the table at the end. The sections below hold the rules no tool checks.
+
+### Comments
+
+Say it in code. A constraint belongs in a type, a lint rule, or a test. A public item's contract belongs in TSDoc (`/** */`) on that item. The only other comments are lint directives that name their rules, `@ts-expect-error <reason>`, `SAFETY: <reason>` above a type assertion, `/*!` license headers, and bundler or formatter directives.
+
+### Tests
+
+Hold every test you write or keep to this checklist:
+
+- Name the wrong implementation this test fails on. A test with no answer is deleted, not kept.
+- No test reads the file it tests. Drive the behaviour through the public interface.
+- An invariant over many files is a lint rule, not a test.
+
+### Debt
+
+`guardrails.ratchet.json` records the lint findings and oversize files this repository already had. Its numbers only go down. After you remove debt, run `pnpm run ratchet:update` and commit the lowered file. A rule listed there is off for `oxlint`. The ratchet counts it instead, and the pre-commit hook rejects it on every line you add.
+
+### What enforces what
+
+| Rule                                                                           | Enforced by                               |
+| ------------------------------------------------------------------------------ | ----------------------------------------- |
+| Formatting                                                                     | oxfmt                                     |
+| Lint findings are errors; no rule warns                                        | oxlint preset                             |
+| Comments are TSDoc, directives, or `SAFETY:` only                              | `antelopejs/no-comments`                  |
+| Every test asserts                                                             | `antelopejs/require-assertion`            |
+| Tests read no files outside fixtures, helpers, locales                         | `antelopejs/no-fs-read-in-tests`          |
+| No assertion that restates a constant                                          | `antelopejs/no-constant-value-assertion`  |
+| No test whose only check is "is a function"                                    | `antelopejs/no-typeof-function-only-test` |
+| Params ≤ 5, function ≤ 120 lines, file ≤ 500 lines, depth ≤ 4, complexity ≤ 20 | `eslint/max-*`, `eslint/complexity`       |
+| Files ≤ 20,000 bytes, tests included                                           | `antelopejs-check-size` (pre-commit)      |
+| Existing debt only shrinks                                                     | `antelopejs-ratchet`                      |
+| Types check                                                                    | `tsc` (pre-push)                          |
+| No dead files, exports, or dependencies                                        | knip                                      |
+| Managed files match the pack                                                   | `antelopejs-sync --check`                 |
+| A test names the wrong implementation it catches                               | review; no tool                           |
+
+<!-- antelopejs-guardrails:end -->
