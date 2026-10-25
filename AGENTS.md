@@ -10,11 +10,11 @@ The AntelopeJS module that implements `@antelopejs/interface-email` over SMTP wi
 
 ## Versioning
 
-`@antelopejs/interface-core` and `@antelopejs/interface-email` are dependencies with a `>=minimum <1.0.0` range. When you raise a minimum, raise the same range in `playground/package.json` and update both lockfiles.
+`@antelopejs/interface-core` and `@antelopejs/interface-email` are dependencies with a `>=minimum <1.0.0` range. When you raise a minimum, raise the same range in `playground/package.json` and the compatibility table in `README.md`, and update both lockfiles.
 
 ## Tests
 
-- `pnpm test` builds `dist` once, then runs `ajs module test .`. `src/test/antelope.test.ts` (`antelopeJs.test` in `package.json`) loads the built module with a placeholder SMTP config and runs the compiled suites in `dist/test`. The suites stub Nodemailer with sinon, so no SMTP server or network is needed.
+- `pnpm test` builds `dist` once, then runs `ajs module test .`. Run the tests through `pnpm test`: the test project has no `installCommand`, so a bare `ajs module test .` loads whatever `dist` already holds. `src/test/antelope.test.ts` (`antelopeJs.test` in `package.json`) loads the built module with a placeholder SMTP config and runs the compiled suites in `dist/test`. The suites stub Nodemailer with sinon, so no SMTP server or network is needed.
 - `pnpm run checks` does not run the playground. Run it with `pnpm install --dir playground`, then `pnpm dev`; it needs network access to Ethereal.
 
 <!-- antelopejs-guardrails:start -->
