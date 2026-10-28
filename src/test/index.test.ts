@@ -162,9 +162,9 @@ function createSendParams(): EmailParams {
   };
 }
 
-describe("Email interface", () => {
-  let sandbox: SinonSandbox;
+let sandbox: SinonSandbox;
 
+function useSandbox(): void {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
   });
@@ -172,6 +172,10 @@ describe("Email interface", () => {
   afterEach(() => {
     sandbox.restore();
   });
+}
+
+describe("Email interface", () => {
+  useSandbox();
 
   it("returns provider capabilities", async () => {
     const capabilities = await GetCapabilities();
@@ -255,6 +259,10 @@ describe("Email interface", () => {
     assert.equal(result.error?.message, SMTP_FAILURE);
     assert.equal(result.error?.retryable, true);
   });
+});
+
+describe("Email interface", () => {
+  useSandbox();
 
   it("stops batch execution when continueOnError is disabled", async () => {
     const sendMailStub = sandbox.stub();

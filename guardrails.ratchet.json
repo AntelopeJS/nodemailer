@@ -6,10 +6,7 @@
     "anti-slop/no-unknown-parameters": 6,
     "anti-slop/no-unsafe-dictionary-type": 2,
     "anti-slop/require-safety-comment-for-type-assertion": 11,
-    "eslint/max-lines-per-function": 1,
     "typescript/no-base-to-string": 1
   },
-  "oversizeFiles": {
-    "src/implementations/email/index.ts": 14783
-  }
+  "oversizeFiles": {}
 }
