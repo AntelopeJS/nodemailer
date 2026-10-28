@@ -10,7 +10,7 @@ The AntelopeJS module that implements `@antelopejs/interface-email` over SMTP wi
 
 ## Versioning
 
-`@antelopejs/interface-core` and `@antelopejs/interface-email` are dependencies with a `>=minimum <1.0.0` range. When you raise a minimum, raise the same range in `playground/package.json` and the compatibility table in `README.md`, and update both lockfiles.
+`@antelopejs/interface-core` is a dependency with a `>=minimum <1.0.0` range. This module implements `@antelopejs/interface-email` (`antelopeJs.implements`), so while that interface is 0.x its range in `package.json` and `README.md` stops below the next minor (`>=0.1.0 <0.2.0`); the playground only consumes it, so its range keeps `<1.0.0`. When you raise a minimum, raise the same range in `playground/package.json` and the compatibility table in `README.md`, and update both lockfiles.
 
 ## Tests
 
