@@ -11,13 +11,11 @@ export function construct(_config: unknown): void {}
 export async function start(): Promise<void> {
   Logging.Info("=== Email Playground ===\n");
 
-  // Test GetCapabilities
   Logging.Info("--- GetCapabilities ---");
   const caps = await GetCapabilities();
   Logging.Info(`Provider: ${caps.name}`);
   Logging.Debug("Features:", caps.features);
 
-  // Test Send
   Logging.Info("\n--- Send ---");
   const result = await Send({
     to: "test@example.com",
@@ -27,7 +25,6 @@ export async function start(): Promise<void> {
   });
   Logging.Info(`Success: ${result.success}, MessageId: ${result.messageId}`);
 
-  // Test SendTemplate (inline)
   Logging.Info("\n--- SendTemplate (inline) ---");
   const templateResult = await SendTemplate({
     to: "user@example.com",
@@ -41,7 +38,6 @@ export async function start(): Promise<void> {
   });
   Logging.Info(`Success: ${templateResult.success}`);
 
-  // Test SendTemplate (provider - should fail)
   Logging.Info("\n--- SendTemplate (provider - expected to fail) ---");
   const providerResult = await SendTemplate({
     to: "user@example.com",
@@ -52,7 +48,6 @@ export async function start(): Promise<void> {
     `Success: ${providerResult.success}, Error: ${providerResult.error?.code}`,
   );
 
-  // Test SendBatch
   Logging.Info("\n--- SendBatch ---");
   const batchResult = await SendBatch({
     messages: [
