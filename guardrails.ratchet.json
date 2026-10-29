@@ -1,6 +1,6 @@
 {
   "rules": {
-    "anti-slop/no-unknown-parameters": 3,
+    "anti-slop/no-unknown-parameters": 2,
     "anti-slop/require-safety-comment-for-type-assertion": 1,
     "typescript/no-base-to-string": 1
   },

@@ -6,7 +6,7 @@ import {
   SendTemplate,
 } from "@antelopejs/interface-email";
 
-export function construct(_config: unknown): void {}
+export function construct(): void {}
 
 export async function start(): Promise<void> {
   Logging.Info("=== Email Playground ===\n");
