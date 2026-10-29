@@ -14,8 +14,12 @@ const UNKNOWN_RECIPIENT = "unknown-recipient";
 
 type NodemailerAttachment = NonNullable<SendMailOptions["attachments"]>[number];
 
+function isAddressString(address: EmailAddress): address is string {
+  return typeof address === "string";
+}
+
 function formatAddress(address: EmailAddress): string {
-  if (typeof address === "string") {
+  if (isAddressString(address)) {
     return address;
   }
   return address.name ? `"${address.name}" <${address.email}>` : address.email;
@@ -44,7 +48,7 @@ export function getFirstRecipient(to: EmailAddress | EmailAddress[]): string {
   if (!firstRecipient) {
     return UNKNOWN_RECIPIENT;
   }
-  return typeof firstRecipient === "string"
+  return isAddressString(firstRecipient)
     ? firstRecipient
     : firstRecipient.email;
 }

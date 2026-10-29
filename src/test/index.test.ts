@@ -2,8 +2,9 @@ import assert from "node:assert";
 import nodemailer from "nodemailer";
 import { Logging } from "@antelopejs/interface-core/logging";
 import type { EmailParams } from "@antelopejs/interface-email";
-import sinon, { type SinonSandbox, type SinonStub } from "sinon";
-import type { SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
+import sinon, { type SinonSandbox } from "sinon";
+import type { SendMailOptions } from "nodemailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import {
   GetCapabilities,
@@ -48,24 +49,6 @@ interface TransportConfig {
   defaults: DefaultSenderConfig;
 }
 
-interface EtherealAuth {
-  user: string;
-  pass: string;
-}
-
-interface EtherealTransportOptions {
-  host?: string;
-  port?: number;
-  secure?: boolean;
-  auth?: EtherealAuth;
-}
-
-interface AttachmentAssertion {
-  content?: unknown;
-  encoding?: string;
-  path?: string;
-}
-
 type EtherealAccount = Awaited<ReturnType<typeof nodemailer.createTestAccount>>;
 
 const DEFAULT_CONFIG: TransportConfig = {
@@ -77,8 +60,17 @@ const DEFAULT_CONFIG: TransportConfig = {
   },
 };
 
-function createSentMessageInfo(messageId: string): SentMessageInfo {
-  return { messageId } as SentMessageInfo;
+function createSentMessageInfo(
+  messageId: string,
+): SMTPTransport.SentMessageInfo {
+  return {
+    envelope: { from: DEFAULT_FROM, to: [TO_EMAIL] },
+    messageId,
+    accepted: [TO_EMAIL],
+    rejected: [],
+    pending: [],
+    response: "250 OK",
+  };
 }
 
 function createEtherealAccount(): EtherealAccount {
@@ -101,35 +93,39 @@ function createEtherealAccount(): EtherealAccount {
       secure: true,
     },
     web: "https://ethereal.email",
-    mxEnabled: true,
-  } as EtherealAccount;
+  };
 }
 
-function createTransporter(sendMailStub: SinonStub): Transporter {
-  return {
-    sendMail: sendMailStub,
-  } as unknown as Transporter;
+function stubTransport(sandbox: SinonSandbox) {
+  const transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+  });
+  const sendMail = sandbox.stub(transporter, "sendMail");
+  const createTransport = sandbox
+    .stub(nodemailer, "createTransport")
+    .returns(transporter);
+  sandbox.stub(nodemailer, "getTestMessageUrl").returns(PREVIEW_URL);
+  sandbox.stub(Logging, "Info");
+  return { sendMail, createTransport };
 }
 
-function getFirstMailOptions(sendMailStub: SinonStub): SendMailOptions {
-  const firstCall = sendMailStub.getCall(0);
+type SendMailStub = ReturnType<typeof stubTransport>["sendMail"];
+
+function getFirstMailOptions(sendMail: SendMailStub): SendMailOptions {
+  const firstCall = sendMail.getCall(0);
   assert.ok(firstCall, "Expected at least one sendMail call");
-  const options = firstCall.args[0] as SendMailOptions | undefined;
+  const options = firstCall.args[0];
   assert.ok(options, "Expected sendMail options");
   return options;
 }
 
 async function initializeTransporterWithStubs(
   sandbox: SinonSandbox,
-  sendMailStub: SinonStub,
-): Promise<void> {
-  sandbox
-    .stub(nodemailer, "createTransport")
-    .returns(createTransporter(sendMailStub));
-  sandbox.stub(nodemailer, "getTestMessageUrl").returns(PREVIEW_URL);
-  sandbox.stub(Logging, "Info");
-
+): Promise<SendMailStub> {
+  const { sendMail } = stubTransport(sandbox);
   await initTransporter(DEFAULT_CONFIG);
+  return sendMail;
 }
 
 function createSendParams(): EmailParams {
@@ -193,10 +189,8 @@ describe("Email interface", () => {
   });
 
   it("sends emails with mapped nodemailer options", async () => {
-    const sendMailStub = sandbox
-      .stub()
-      .resolves(createSentMessageInfo(MESSAGE_ID));
-    await initializeTransporterWithStubs(sandbox, sendMailStub);
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
 
     const result = await Send(createSendParams());
     const options = getFirstMailOptions(sendMailStub);
@@ -217,21 +211,17 @@ describe("Email interface", () => {
     const attachments = options.attachments ?? [];
     assert.equal(attachments.length, 3);
 
-    const firstAttachment = attachments[0] as AttachmentAssertion;
-    const secondAttachment = attachments[1] as AttachmentAssertion;
-    const thirdAttachment = attachments[2] as AttachmentAssertion;
+    const [firstAttachment, secondAttachment, thirdAttachment] = attachments;
 
-    assert.equal(Buffer.isBuffer(firstAttachment.content), true);
-    assert.equal(secondAttachment.encoding, "base64");
-    assert.equal(secondAttachment.content, BASE64_CONTENT);
-    assert.equal(thirdAttachment.path, URL_ATTACHMENT);
+    assert.equal(Buffer.isBuffer(firstAttachment?.content), true);
+    assert.equal(secondAttachment?.encoding, "base64");
+    assert.equal(secondAttachment?.content, BASE64_CONTENT);
+    assert.equal(thirdAttachment?.path, URL_ATTACHMENT);
   });
 
   it("uses configured default sender when sender is missing", async () => {
-    const sendMailStub = sandbox
-      .stub()
-      .resolves(createSentMessageInfo(MESSAGE_ID));
-    await initializeTransporterWithStubs(sandbox, sendMailStub);
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
 
     await Send({
       to: TO_EMAIL,
@@ -244,8 +234,8 @@ describe("Email interface", () => {
   });
 
   it("returns failed response when transporter throws", async () => {
-    const sendMailStub = sandbox.stub().rejects(new Error(SMTP_FAILURE));
-    await initializeTransporterWithStubs(sandbox, sendMailStub);
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.rejects(new Error(SMTP_FAILURE));
 
     const result = await Send({
       to: TO_EMAIL,
@@ -265,11 +255,9 @@ describe("Email interface", () => {
   useSandbox();
 
   it("stops batch execution when continueOnError is disabled", async () => {
-    const sendMailStub = sandbox.stub();
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
     sendMailStub.onFirstCall().rejects(new Error(SMTP_FAILURE));
     sendMailStub.onSecondCall().resolves(createSentMessageInfo(MESSAGE_ID));
-
-    await initializeTransporterWithStubs(sandbox, sendMailStub);
 
     const result = await SendBatch({
       continueOnError: false,
@@ -300,10 +288,8 @@ describe("Email interface", () => {
   });
 
   it("renders inline templates before sending", async () => {
-    const sendMailStub = sandbox
-      .stub()
-      .resolves(createSentMessageInfo(MESSAGE_ID));
-    await initializeTransporterWithStubs(sandbox, sendMailStub);
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
 
     const result = await SendTemplate({
       to: TO_EMAIL,
@@ -324,10 +310,8 @@ describe("Email interface", () => {
   });
 
   it("returns NOT_SUPPORTED for provider templates", async () => {
-    const sendMailStub = sandbox
-      .stub()
-      .resolves(createSentMessageInfo(MESSAGE_ID));
-    await initializeTransporterWithStubs(sandbox, sendMailStub);
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
 
     const result = await SendTemplate({
       to: TO_EMAIL,
@@ -343,18 +327,12 @@ describe("Email interface", () => {
   });
 
   it("initializes ethereal transporter when configured", async () => {
-    const sendMailStub = sandbox
-      .stub()
-      .resolves(createSentMessageInfo(MESSAGE_ID));
-    const createTransportStub = sandbox
-      .stub(nodemailer, "createTransport")
-      .returns(createTransporter(sendMailStub));
-
+    const { sendMail: sendMailStub, createTransport: createTransportStub } =
+      stubTransport(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
     sandbox
       .stub(nodemailer, "createTestAccount")
       .resolves(createEtherealAccount());
-    sandbox.stub(nodemailer, "getTestMessageUrl").returns(PREVIEW_URL);
-    sandbox.stub(Logging, "Info");
 
     await initTransporter({ ethereal: true });
     await Send({
@@ -367,13 +345,12 @@ describe("Email interface", () => {
     const transportCall = createTransportStub.getCall(0);
     assert.ok(transportCall, "Expected createTransport call");
 
-    const transportOptions = transportCall.args[0] as EtherealTransportOptions;
-
     assert.equal(options.from, ETHEREAL_USER);
-    assert.equal(transportOptions.host, ETHEREAL_HOST);
-    assert.equal(transportOptions.port, ETHEREAL_PORT);
-    assert.equal(transportOptions.secure, false);
-    assert.equal(transportOptions.auth?.user, ETHEREAL_USER);
-    assert.equal(transportOptions.auth?.pass, ETHEREAL_PASS);
+    assert.deepStrictEqual(transportCall.args[0], {
+      host: ETHEREAL_HOST,
+      port: ETHEREAL_PORT,
+      secure: false,
+      auth: { user: ETHEREAL_USER, pass: ETHEREAL_PASS },
+    });
   });
 });

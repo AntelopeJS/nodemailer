@@ -8,7 +8,12 @@ import type {
   TemplateEmailParams,
 } from "@antelopejs/interface-email";
 
-import { validateConfig } from "./config";
+import {
+  createConfigError,
+  isObject,
+  type NodemailerConfig,
+  validateConfig,
+} from "./config";
 import { buildMailOptions, getFirstRecipient } from "./mail-options";
 import {
   createBatchMessageResponse,
@@ -18,7 +23,6 @@ import {
   createSuccessResponse,
   logPreviewUrl,
   PROVIDER_NAME,
-  toError,
   updateBatchState,
 } from "./responses";
 import {
@@ -33,7 +37,10 @@ import {
 } from "./transporter";
 
 export async function initTransporter(config: unknown): Promise<void> {
-  const parsedConfig = validateConfig(config);
+  if (!isObject(config)) {
+    throw createConfigError("Missing configuration");
+  }
+  const parsedConfig = validateConfig(config as NodemailerConfig);
   if (parsedConfig.ethereal === true) {
     await initializeEtherealTransporter();
     return;
@@ -47,7 +54,9 @@ export async function Send(params: EmailParams): Promise<EmailResponse> {
     logPreviewUrl(info);
     return createSuccessResponse(info);
   } catch (error) {
-    return createFailureResponse(toError(error).message);
+    return createFailureResponse(
+      error instanceof Error ? error.message : String(error),
+    );
   }
 }
 

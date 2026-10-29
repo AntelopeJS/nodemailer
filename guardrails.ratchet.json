@@ -1,11 +1,7 @@
 {
   "rules": {
-    "anti-slop/no-chained-type-assertions": 1,
-    "anti-slop/no-conditional-empty-object-spread": 2,
-    "anti-slop/no-runtime-typeof": 4,
-    "anti-slop/no-unknown-parameters": 6,
-    "anti-slop/no-unsafe-dictionary-type": 2,
-    "anti-slop/require-safety-comment-for-type-assertion": 11,
+    "anti-slop/no-unknown-parameters": 3,
+    "anti-slop/require-safety-comment-for-type-assertion": 1,
     "typescript/no-base-to-string": 1
   },
   "oversizeFiles": {}

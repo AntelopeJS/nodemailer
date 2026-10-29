@@ -15,7 +15,7 @@ interface NodemailerDefaultsConfig {
   from?: string;
 }
 
-interface NodemailerConfig {
+export interface NodemailerConfig {
   host?: string;
   port?: number;
   secure?: boolean;
@@ -40,7 +40,7 @@ type ResolvedNodemailerConfig =
 
 type EtherealAccount = Awaited<ReturnType<typeof nodemailer.createTestAccount>>;
 
-function isRecord(value: unknown): value is Record<string, unknown> {
+export function isObject(value: unknown): value is object {
   return typeof value === "object" && value !== null;
 }
 
@@ -48,15 +48,12 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.length > 0;
 }
 
-export function createConfigError(message: string): Error {
-  return new Error(`${EMAIL_PREFIX} ${message}`);
+function isNumber(value: unknown): value is number {
+  return typeof value === "number";
 }
 
-function parseConfig(config: unknown): NodemailerConfig {
-  if (!isRecord(config)) {
-    throw createConfigError("Missing configuration");
-  }
-  return config as NodemailerConfig;
+export function createConfigError(message: string): Error {
+  return new Error(`${EMAIL_PREFIX} ${message}`);
 }
 
 function ensureHost(config: NodemailerConfig): string {
@@ -67,7 +64,7 @@ function ensureHost(config: NodemailerConfig): string {
 }
 
 function ensurePort(config: NodemailerConfig): number {
-  if (typeof config.port !== "number") {
+  if (!isNumber(config.port)) {
     throw createConfigError("Missing required config: port");
   }
   return config.port;
@@ -85,18 +82,19 @@ function validateAuth(config: NodemailerConfig): void {
   }
 }
 
-export function validateConfig(config: unknown): ResolvedNodemailerConfig {
-  const parsedConfig = parseConfig(config);
-  if (parsedConfig.ethereal === true) {
-    return { ...parsedConfig, ethereal: true };
+export function validateConfig(
+  config: NodemailerConfig,
+): ResolvedNodemailerConfig {
+  if (config.ethereal === true) {
+    return { ...config, ethereal: true };
   }
 
-  validateAuth(parsedConfig);
+  validateAuth(config);
 
   return {
-    ...parsedConfig,
-    host: ensureHost(parsedConfig),
-    port: ensurePort(parsedConfig),
+    ...config,
+    host: ensureHost(config),
+    port: ensurePort(config),
   };
 }
 

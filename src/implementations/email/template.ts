@@ -7,7 +7,7 @@ import type {
 
 export function renderTemplate(
   template: InlineTemplate,
-  variables: Record<string, unknown>,
+  variables: NonNullable<TemplateEmailParams["variables"]>,
 ): string {
   let content = template.content;
   for (const [key, value] of Object.entries(variables)) {

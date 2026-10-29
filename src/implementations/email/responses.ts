@@ -20,15 +20,8 @@ interface BatchState {
   responses: BatchEmailMessageResponse[];
 }
 
-interface MessageIdCarrier {
-  messageId?: unknown;
-}
-
-export function toError(error: unknown): Error {
-  if (error instanceof Error) {
-    return error;
-  }
-  return new Error(String(error));
+function isString(value: unknown): value is string {
+  return typeof value === "string";
 }
 
 export function logPreviewUrl(info: SentMessageInfo): void {
@@ -39,18 +32,23 @@ export function logPreviewUrl(info: SentMessageInfo): void {
 }
 
 function getMessageId(info: SentMessageInfo): string | undefined {
-  const infoWithMessageId = info as MessageIdCarrier;
-  return typeof infoWithMessageId.messageId === "string"
-    ? infoWithMessageId.messageId
-    : undefined;
+  return isString(info.messageId) ? info.messageId : undefined;
 }
 
 export function createSuccessResponse(info: SentMessageInfo): EmailResponse {
   const messageId = getMessageId(info);
+  if (messageId === undefined) {
+    return {
+      success: true,
+      status: "sent",
+      timestamp: new Date(),
+      provider: PROVIDER_NAME,
+    };
+  }
   return {
     success: true,
     status: "sent",
-    ...(messageId !== undefined ? { messageId } : {}),
+    messageId,
     timestamp: new Date(),
     provider: PROVIDER_NAME,
   };
@@ -90,12 +88,10 @@ export function createBatchMessageResponse(
   index: number,
   recipient: string,
 ): BatchEmailMessageResponse {
-  return {
-    ...result,
-    ...(message.batchId !== undefined ? { batchId: message.batchId } : {}),
-    index,
-    recipient,
-  };
+  if (message.batchId === undefined) {
+    return { ...result, index, recipient };
+  }
+  return { ...result, batchId: message.batchId, index, recipient };
 }
 
 export function createInitialBatchState(): BatchState {
