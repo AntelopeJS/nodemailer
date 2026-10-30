@@ -3,10 +3,7 @@
   "rules": {
     "anti-slop/no-unknown-parameters": 2,
     "anti-slop/require-safety-comment-for-type-assertion": 1,
-    "typescript/no-base-to-string": 1,
-    "typescript/no-unsafe-argument": 1,
-    "typescript/no-unsafe-assignment": 1,
-    "typescript/no-unsafe-return": 1
+    "typescript/no-base-to-string": 1
   },
   "oversizeFiles": {}
 }
