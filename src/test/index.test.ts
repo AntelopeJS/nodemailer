@@ -375,3 +375,21 @@ describe("Email configuration", () => {
     );
   });
 });
+
+describe("Inline templates", () => {
+  useSandbox();
+
+  it("renders nested variables as JSON, as the brevo implementation does", async () => {
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
+
+    await SendTemplate({
+      to: TO_EMAIL,
+      subject: SUBJECT,
+      template: { type: "text", content: "{{ order }} {{ tags }} {{ none }}" },
+      variables: { order: { id: 7 }, tags: ["a", "b"], none: null },
+    });
+
+    assert.equal(getFirstMailOptions(sendMailStub).text, '{"id":7} ["a","b"] ');
+  });
+});
