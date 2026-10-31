@@ -102,12 +102,7 @@ const result = await Send({
 
 <!-- antelopejs-docs-compat:end -->
 
-| Package                       | Supported range  |
-| ----------------------------- | ---------------- |
-| `@antelopejs/interface-email` | `>=0.1.0 <0.2.0` |
-| `@antelopejs/interface-core`  | `>=0.1.1 <1.0.0` |
-
-The module is developed and tested against `@antelopejs/core` `^1.13.4` on Node.js 24, with `nodemailer` `^6.10.1`.
+The module is developed and tested on Node.js 24, with `nodemailer` `^6.10.1`.
 
 ## Contributing
 
