@@ -1,0 +1,13 @@
+diff --git a/src/implementations/email/config.ts b/src/implementations/email/config.ts
+index 3351a61..2146ba5 100644
+--- a/src/implementations/email/config.ts
++++ b/src/implementations/email/config.ts
+@@ -134,7 +134,7 @@ export function buildStandardTransportOptions(
+   const transportOptions: SMTPTransport.Options = {
+     host: config.host,
+     port: config.port,
+-    secure: config.secure ?? config.port === SECURE_PORT,
++    secure: config.secure ?? config.port !== SECURE_PORT,
+   };
+   if (config.auth) {
+     transportOptions.auth = config.auth;

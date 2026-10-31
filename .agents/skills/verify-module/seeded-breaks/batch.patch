@@ -1,0 +1,13 @@
+diff --git a/src/implementations/email/index.ts b/src/implementations/email/index.ts
+index a92b9ae..520b1b0 100644
+--- a/src/implementations/email/index.ts
++++ b/src/implementations/email/index.ts
+@@ -55,7 +55,7 @@ export async function Send(params: EmailParams): Promise<EmailResponse> {
+ export async function SendBatch(
+   params: BatchEmailParams,
+ ): Promise<BatchEmailResponse> {
+-  const continueOnError = params.continueOnError ?? true;
++  const continueOnError = true;
+   const state = createInitialBatchState();
+ 
+   for (const [index, message] of params.messages.entries()) {

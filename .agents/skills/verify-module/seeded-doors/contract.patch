@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 6cf259f..8158e81 100644
+--- a/package.json
++++ b/package.json
+@@ -50,7 +50,7 @@
+   },
+   "dependencies": {
+     "@antelopejs/interface-core": ">=0.2.4 <1.0.0",
+-    "@antelopejs/interface-email": ">=0.1.0 <0.2.0",
++    "@antelopejs/interface-email": ">=0.1.0 <0.3.0",
+     "nodemailer": "^6.10.1"
+   },
+   "devDependencies": {
