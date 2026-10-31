@@ -1,10 +1,16 @@
 import { ImplementInterface } from "@antelopejs/interface-core";
 
-import { ReadConfig } from "./implementations/email/config";
+import {
+  CheckConfig,
+  type NodemailerConfig,
+} from "./implementations/email/config";
 import { initTransporter } from "./implementations/email";
 
-export async function construct(config: unknown): Promise<void> {
-  await initTransporter(ReadConfig(config));
+export async function construct(
+  config: NodemailerConfig | undefined,
+): Promise<void> {
+  CheckConfig(config);
+  await initTransporter(config);
 
   void ImplementInterface(
     await import("@antelopejs/interface-email"),
