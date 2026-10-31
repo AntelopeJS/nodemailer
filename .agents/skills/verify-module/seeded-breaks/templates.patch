@@ -1,0 +1,13 @@
+diff --git a/src/implementations/email/template.ts b/src/implementations/email/template.ts
+index e678f07..362e24c 100644
+--- a/src/implementations/email/template.ts
++++ b/src/implementations/email/template.ts
+@@ -25,7 +25,7 @@ export function renderTemplate(
+   let content = template.content;
+   for (const [key, value] of Object.entries(variables)) {
+     content = content.replace(
+-      new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`, "g"),
++      new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`),
+       renderValue(value),
+     );
+   }

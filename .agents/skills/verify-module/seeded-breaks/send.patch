@@ -1,0 +1,13 @@
+diff --git a/src/implementations/email/mail-options.ts b/src/implementations/email/mail-options.ts
+index 8ad041a..872a8c8 100644
+--- a/src/implementations/email/mail-options.ts
++++ b/src/implementations/email/mail-options.ts
+@@ -126,7 +126,7 @@ export function buildMailOptions(params: EmailParams): SendMailOptions {
+     : getDefaultFrom();
+ 
+   assignMailOption(mailOptions, "from", fromAddress);
+-  assignMailOption(mailOptions, "cc", formatOptionalAddresses(params.cc));
++  assignMailOption(mailOptions, "bcc", formatOptionalAddresses(params.cc));
+   assignMailOption(mailOptions, "bcc", formatOptionalAddresses(params.bcc));
+   assignMailOption(
+     mailOptions,
