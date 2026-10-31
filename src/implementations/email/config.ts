@@ -40,8 +40,34 @@ type ResolvedNodemailerConfig =
 
 type EtherealAccount = Awaited<ReturnType<typeof nodemailer.createTestAccount>>;
 
-export function isObject(value: unknown): value is object {
+function isFields(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
+}
+
+function isOptionalFlag(value: unknown): value is boolean | undefined {
+  return value === undefined || typeof value === "boolean";
+}
+
+function isOptionalText(value: unknown): value is string | undefined {
+  return value === undefined || typeof value === "string";
+}
+
+function isAuth(value: unknown): value is NodemailerAuthConfig {
+  return (
+    isFields(value) &&
+    isNonEmptyString(value.user) &&
+    isNonEmptyString(value.pass)
+  );
+}
+
+function isUnset(value: unknown): value is false | 0 | "" | null | undefined {
+  return (
+    value === undefined ||
+    value === null ||
+    value === false ||
+    value === 0 ||
+    value === ""
+  );
 }
 
 function isNonEmptyString(value: unknown): value is string {
@@ -70,16 +96,38 @@ function ensurePort(config: NodemailerConfig): number {
   return config.port;
 }
 
-function validateAuth(config: NodemailerConfig): void {
-  if (!config.auth) {
-    return;
+/** The module config, read field by field from the raw value core passes to `construct`. */
+export function ReadConfig(raw: unknown): NodemailerConfig {
+  if (!isFields(raw)) {
+    throw createConfigError("Missing configuration");
   }
-  if (!isNonEmptyString(config.auth.user)) {
-    throw createConfigError("Missing required config: auth.user");
+  if (raw.ethereal === true) {
+    return { ethereal: true };
   }
-  if (!isNonEmptyString(config.auth.pass)) {
-    throw createConfigError("Missing required config: auth.pass");
+  const { host, port, secure, auth, defaults } = raw;
+  if (!isOptionalFlag(secure)) {
+    throw createConfigError("Invalid config: secure must be a boolean");
   }
+  const from = isFields(defaults) ? defaults.from : undefined;
+  if (!isOptionalText(from)) {
+    throw createConfigError("Invalid config: defaults.from must be a string");
+  }
+  const config: NodemailerConfig = {};
+  if (isNonEmptyString(host)) config.host = host;
+  if (isNumber(port)) config.port = port;
+  if (secure !== undefined) config.secure = secure;
+  if (isFields(defaults)) config.defaults = from === undefined ? {} : { from };
+  if (isAuth(auth)) {
+    config.auth = auth;
+  } else if (!isUnset(auth)) {
+    const user = isFields(auth) ? auth.user : undefined;
+    throw createConfigError(
+      isNonEmptyString(user)
+        ? "Missing required config: auth.pass"
+        : "Missing required config: auth.user",
+    );
+  }
+  return config;
 }
 
 export function validateConfig(
@@ -88,8 +136,6 @@ export function validateConfig(
   if (config.ethereal === true) {
     return { ...config, ethereal: true };
   }
-
-  validateAuth(config);
 
   return {
     ...config,
