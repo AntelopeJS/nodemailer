@@ -13,6 +13,7 @@ import {
   SendBatch,
   SendTemplate,
 } from "../implementations/email";
+import { construct } from "../index";
 
 const SMTP_HOST = "smtp.example.com";
 const SMTP_PORT = 587;
@@ -352,5 +353,25 @@ describe("Email interface", () => {
       secure: false,
       auth: { user: ETHEREAL_USER, pass: ETHEREAL_PASS },
     });
+  });
+});
+
+describe("Email configuration", () => {
+  useSandbox();
+
+  it("refuses a secure flag that is not a boolean", async () => {
+    stubTransport(sandbox);
+    await assert.rejects(
+      () => construct({ ...DEFAULT_CONFIG, secure: "false" }),
+      /secure must be a boolean/,
+    );
+  });
+
+  it("refuses a default sender that is not a string", async () => {
+    stubTransport(sandbox);
+    await assert.rejects(
+      () => construct({ ...DEFAULT_CONFIG, defaults: { from: 5 } }),
+      /defaults\.from must be a string/,
+    );
   });
 });
