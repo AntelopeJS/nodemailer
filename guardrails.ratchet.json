@@ -1,8 +1,7 @@
 {
   "pack": "0.2.17",
   "rules": {
-    "anti-slop/no-unknown-parameters": 2,
-    "typescript/no-base-to-string": 1
+    "anti-slop/no-unknown-parameters": 2
   },
   "oversizeFiles": {}
 }
