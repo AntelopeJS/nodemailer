@@ -13,6 +13,7 @@ import {
   SendBatch,
   SendTemplate,
 } from "../implementations/email";
+import { construct } from "../index";
 
 const SMTP_HOST = "smtp.example.com";
 const SMTP_PORT = 587;
@@ -352,5 +353,43 @@ describe("Email interface", () => {
       secure: false,
       auth: { user: ETHEREAL_USER, pass: ETHEREAL_PASS },
     });
+  });
+});
+
+describe("Email configuration", () => {
+  useSandbox();
+
+  it("refuses a secure flag that is not a boolean", async () => {
+    stubTransport(sandbox);
+    await assert.rejects(
+      () => construct({ ...DEFAULT_CONFIG, secure: "false" }),
+      /secure must be a boolean/,
+    );
+  });
+
+  it("refuses a default sender that is not a string", async () => {
+    stubTransport(sandbox);
+    await assert.rejects(
+      () => construct({ ...DEFAULT_CONFIG, defaults: { from: 5 } }),
+      /defaults\.from must be a string/,
+    );
+  });
+});
+
+describe("Inline templates", () => {
+  useSandbox();
+
+  it("renders nested variables as JSON, as the brevo implementation does", async () => {
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
+
+    await SendTemplate({
+      to: TO_EMAIL,
+      subject: SUBJECT,
+      template: { type: "text", content: "{{ order }} {{ tags }} {{ none }}" },
+      variables: { order: { id: 7 }, tags: ["a", "b"], none: null },
+    });
+
+    assert.equal(getFirstMailOptions(sendMailStub).text, '{"id":7} ["a","b"] ');
   });
 });

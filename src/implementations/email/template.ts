@@ -1,9 +1,22 @@
 import type {
   EmailParams,
   InlineTemplate,
+  JsonObject,
+  JsonValue,
   ProviderTemplate,
   TemplateEmailParams,
 } from "@antelopejs/interface-email";
+
+function isStructured(value: JsonValue): value is JsonValue[] | JsonObject {
+  return typeof value === "object" && value !== null;
+}
+
+function renderValue(value: JsonValue | undefined): string {
+  if (value === undefined || value === null) {
+    return "";
+  }
+  return isStructured(value) ? JSON.stringify(value) : String(value);
+}
 
 export function renderTemplate(
   template: InlineTemplate,
@@ -13,7 +26,7 @@ export function renderTemplate(
   for (const [key, value] of Object.entries(variables)) {
     content = content.replace(
       new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`, "g"),
-      String(value ?? ""),
+      renderValue(value),
     );
   }
   return content;
