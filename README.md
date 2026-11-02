@@ -3,7 +3,7 @@
 <div align="center">
 <a href="https://www.npmjs.com/package/@antelopejs/nodemailer"><img alt="npm" src="https://img.shields.io/npm/v/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
 <a href="./LICENSE"><img alt="License" src="https://img.shields.io/npm/l/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
-<a href="https://discord.gg/sjK28QHrA7"><img src="https://img.shields.io/badge/Discord-18181B?logo=discord&style=for-the-badge&color=000000" alt="Discord"></a>
+<a href="https://discord.gg/g4pFt6eXqu"><img src="https://img.shields.io/badge/Discord-18181B?logo=discord&style=for-the-badge&color=000000" alt="Discord"></a>
 <a href="https://github.com/AntelopeJS/interface-email/tree/main/docs"><img src="https://img.shields.io/badge/Docs-18181B?style=for-the-badge&color=000000" alt="Documentation"></a>
 </div>
 
@@ -54,14 +54,15 @@ export default defineConfig({
 });
 ```
 
-| Key             | Description                                                                                                  |
-| --------------- | ------------------------------------------------------------------------------------------------------------ |
-| `host`          | SMTP host. Required unless `ethereal` is `true`.                                                             |
-| `port`          | SMTP port, as a number. Required unless `ethereal` is `true`.                                                |
-| `secure`        | Use TLS from the start of the connection. Defaults to `true` on port 465 and `false` otherwise.              |
-| `auth`          | Optional SMTP credentials, `{ user, pass }`. Both must be non-empty when set.                                |
-| `defaults.from` | Sender used when a message has no `from`.                                                                    |
-| `ethereal`      | Set to `true` in development to send through a temporary [Ethereal](https://ethereal.email) account instead. |
+| Key             | Description                                                                                                                                  |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `host`          | SMTP host. Required unless `ethereal` is `true`.                                                                                             |
+| `port`          | SMTP port, as a number. Required unless `ethereal` is `true`.                                                                                |
+| `secure`        | Use TLS from the start of the connection. Defaults to `true` on port 465 and `false` otherwise.                                              |
+| `requireTLS`    | Require STARTTLS. Defaults to `true` when `auth` is set and `secure` resolves to `false`. Set to `false` to allow clear-text authentication. |
+| `auth`          | Optional SMTP credentials, `{ user, pass }`. Both must be non-empty when set.                                                                |
+| `defaults.from` | Sender used when a message has no `from`.                                                                                                    |
+| `ethereal`      | Set to `true` in development to send through a temporary [Ethereal](https://ethereal.email) account instead.                                 |
 
 With `ethereal: true`, the module ignores the other keys, creates an account at startup, logs its address and uses it as the default sender. Each sent message logs a preview URL where you can read it.
 

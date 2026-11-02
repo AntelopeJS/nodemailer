@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.0.7
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.6...v0.0.7)
+
+### 🩹 Fixes
+
+- **email:** Require STARTTLS when auth is set on a non-secure port ([#41](https://github.com/AntelopeJS/nodemailer/pull/41))
+
+### 💅 Refactors
+
+- Clean the repo with the guardrail pack ([#28](https://github.com/AntelopeJS/nodemailer/pull/28))
+- **playground:** Drop the unused construct parameter ([#31](https://github.com/AntelopeJS/nodemailer/pull/31))
+
+### 📖 Documentation
+
+- **readme:** Use one Discord invite ([#39](https://github.com/AntelopeJS/nodemailer/pull/39))
+
+### 📦 Build
+
+- **deps:** Adopt @antelopejs/interface-email 0.1.0 ([#25](https://github.com/AntelopeJS/nodemailer/pull/25))
+- **deps:** Bump @antelopejs/tooling-configs to 0.2.17 ([#32](https://github.com/AntelopeJS/nodemailer/pull/32))
+
+### 🏡 Chore
+
+- Adopt the guardrail pack from tooling-configs 0.2.0 ([#23](https://github.com/AntelopeJS/nodemailer/pull/23))
+- Configure Renovate with the shared preset ([#24](https://github.com/AntelopeJS/nodemailer/pull/24))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli ([@Upd4ting](http://github.com/Upd4ting))
+
 ## v0.0.6
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.5...v0.0.6)
