@@ -9,6 +9,8 @@
 
 The AntelopeJS Nodemailer module sends the email interface's messages over SMTP with [Nodemailer](https://nodemailer.com).
 
+Part of [AntelopeJS](https://github.com/AntelopeJS/antelopejs). Used by [AntelopeJS DMS](https://github.com/AntelopeJS/dms), the open-source back office for your PostgreSQL, MongoDB or RethinkDB database.
+
 ## Interfaces
 
 | Interface                                                                      | Documentation                                                         |
