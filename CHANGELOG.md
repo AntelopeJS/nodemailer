@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.0.8
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.7...v0.0.8)
+
+### 📖 Documentation
+
+- **github:** Send questions and ideas to Discord ([#42](https://github.com/AntelopeJS/nodemailer/pull/42))
+
+### 🏡 Chore
+
+- Land the cleanup campaign on main ([#46](https://github.com/AntelopeJS/nodemailer/pull/46))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli ([@Upd4ting](http://github.com/Upd4ting))
+
 ## v0.0.7
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.6...v0.0.7)
