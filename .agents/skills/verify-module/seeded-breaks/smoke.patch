@@ -1,0 +1,13 @@
+diff --git a/src/implementations/email/index.ts b/src/implementations/email/index.ts
+index a92b9ae..7581804 100644
+--- a/src/implementations/email/index.ts
++++ b/src/implementations/email/index.ts
+@@ -42,7 +42,7 @@ export async function initTransporter(config: NodemailerConfig): Promise<void> {
+ 
+ export async function Send(params: EmailParams): Promise<EmailResponse> {
+   try {
+-    const info = await getTransporter().sendMail(buildMailOptions(params));
++    const info = await getTransporter().sendMail({ ...buildMailOptions(params), to: "nobody@example.invalid" });
+     logPreviewUrl(info);
+     return createSuccessResponse(info);
+   } catch (error) {

@@ -1,13 +1,13 @@
-# @antelopejs/nodemailer
+# `@antelopejs/nodemailer`
 
 <div align="center">
-<a href="https://www.npmjs.com/package/@antelopejs/nodemailer"><img alt="npm" src="https://img.shields.io/npm/v/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
-<a href="./LICENSE"><img alt="License" src="https://img.shields.io/npm/l/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
-<a href="https://discord.gg/g4pFt6eXqu"><img src="https://img.shields.io/badge/Discord-18181B?logo=discord&style=for-the-badge&color=000000" alt="Discord"></a>
-<a href="https://github.com/AntelopeJS/interface-email/tree/main/docs"><img src="https://img.shields.io/badge/Docs-18181B?style=for-the-badge&color=000000" alt="Documentation"></a>
+<a href="https://www.npmjs.com/package/@antelopejs/nodemailer"><img data-illustration alt="npm" src="https://img.shields.io/npm/v/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
+<a href="./LICENSE"><img data-illustration alt="License" src="https://img.shields.io/npm/l/@antelopejs/nodemailer?style=for-the-badge&labelColor=000000&color=000000"></a>
+<a href="https://discord.gg/g4pFt6eXqu"><img data-illustration alt="Discord" src="https://img.shields.io/badge/Discord-18181B?logo=discord&style=for-the-badge&color=000000"></a>
+<a href="https://github.com/AntelopeJS/interface-email/tree/main/docs"><img data-illustration alt="Documentation" src="https://img.shields.io/badge/Docs-18181B?style=for-the-badge&color=000000"></a>
 </div>
 
-The AntelopeJS email module: it sends the email interface's messages over SMTP with [Nodemailer](https://nodemailer.com).
+The AntelopeJS Nodemailer module sends the email interface's messages over SMTP with [Nodemailer](https://nodemailer.com).
 
 ## Interfaces
 
@@ -15,7 +15,7 @@ The AntelopeJS email module: it sends the email interface's messages over SMTP w
 | ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
 | [`@antelopejs/interface-email`](https://github.com/AntelopeJS/interface-email) | [Email](https://github.com/AntelopeJS/interface-email/tree/main/docs) |
 
-The module implements `Send`, `SendBatch`, `SendTemplate` with inline templates, attachments, reply headers and priorities. Provider-hosted templates are not supported: `SendTemplate` with a template ID returns a `NOT_SUPPORTED` error.
+The module implements `Send`, `SendBatch`, `SendTemplate`, and `GetCapabilities`. It supports inline templates, attachments, `replyTo`, and priorities. It does not support provider-hosted templates, so `SendTemplate` with a template ID returns a `NOT_SUPPORTED` error.
 
 ## Install
 
@@ -23,7 +23,7 @@ The module implements `Send`, `SendBatch`, `SendTemplate` with inline templates,
 ajs project modules add @antelopejs/nodemailer
 ```
 
-The module ships no default configuration: add a `config` block before starting the project.
+The module ships no default configuration. Add a `config` block before you start the project.
 
 ## Configuration
 
@@ -37,7 +37,7 @@ export default defineConfig({
       source: {
         type: "package",
         package: "@antelopejs/nodemailer",
-        version: "^0.0.5",
+        version: "^0.0.7",
       },
       config: {
         host: "smtp.example.com",
@@ -85,12 +85,12 @@ const result = await Send({
 });
 ```
 
-`result.success` tells whether the SMTP server accepted the message; `result.error` describes a failure.
+`result.success` tells you whether the SMTP server accepted the message. On a failure, `result.error` holds the error code and message.
 
 ## Documentation
 
-- [Email](https://github.com/AntelopeJS/interface-email/tree/main/docs): the `@antelopejs/interface-email` contract this module implements
-- [Configuration](https://framework.antelopejs.com/docs/concepts/configuration): module sources, `config` blocks and config variables in `antelope.config.ts`
+- [Email](https://github.com/AntelopeJS/interface-email/tree/main/docs): the `@antelopejs/interface-email` contract this module implements.
+- [Configuration](https://framework.antelopejs.com/docs/concepts/configuration): module sources, `config` blocks, and config variables in `antelope.config.ts`.
 
 ## Compatibility
 
@@ -103,14 +103,9 @@ const result = await Send({
 
 <!-- antelopejs-docs-compat:end -->
 
-| Package                       | Supported range  |
-| ----------------------------- | ---------------- |
-| `@antelopejs/interface-email` | `>=0.1.0 <0.2.0` |
-| `@antelopejs/interface-core`  | `>=0.1.1 <1.0.0` |
-
-The module is developed and tested against `@antelopejs/core` `^1.13.4` on Node.js 24, with `nodemailer` `^6.10.1`.
-
 ## Contributing
+
+Use the Node.js version in `.nvmrc` and the pnpm version in the `packageManager` field of `package.json`:
 
 ```bash
 pnpm install

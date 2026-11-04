@@ -5,6 +5,7 @@ export const EMAIL_PREFIX = "[Email]";
 const ETHEREAL_HOST = "smtp.ethereal.email";
 const ETHEREAL_PORT = 587;
 const SECURE_PORT = 465;
+const NO_AUTH = new Set([undefined, null, false, 0, ""]);
 
 interface NodemailerAuthConfig {
   user: string;
@@ -42,10 +43,6 @@ type ResolvedNodemailerConfig =
 
 type EtherealAccount = Awaited<ReturnType<typeof nodemailer.createTestAccount>>;
 
-export function isObject(value: unknown): value is object {
-  return typeof value === "object" && value !== null;
-}
-
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.length > 0;
 }
@@ -72,15 +69,36 @@ function ensurePort(config: NodemailerConfig): number {
   return config.port;
 }
 
-function validateAuth(config: NodemailerConfig): void {
-  if (!config.auth) {
+/** Refuses a module config that breaks `NodemailerConfig`: core passes the operator's config to `construct` without checking it. */
+export function CheckConfig(
+  config: NodemailerConfig | undefined,
+): asserts config is NodemailerConfig {
+  if (typeof config !== "object" || config === null) {
+    throw createConfigError("Missing configuration");
+  }
+  if (config.ethereal === true) {
     return;
   }
-  if (!isNonEmptyString(config.auth.user)) {
-    throw createConfigError("Missing required config: auth.user");
+  if (config.secure !== undefined && typeof config.secure !== "boolean") {
+    throw createConfigError("Invalid config: secure must be a boolean");
   }
-  if (!isNonEmptyString(config.auth.pass)) {
-    throw createConfigError("Missing required config: auth.pass");
+  const { defaults, auth } = config;
+  const from =
+    typeof defaults === "object" && defaults !== null
+      ? defaults.from
+      : undefined;
+  if (from !== undefined && typeof from !== "string") {
+    throw createConfigError("Invalid config: defaults.from must be a string");
+  }
+  if (typeof auth === "object" && auth !== null) {
+    if (typeof auth.user !== "string" || auth.user === "") {
+      throw createConfigError("Missing required config: auth.user");
+    }
+    if (typeof auth.pass !== "string" || auth.pass === "") {
+      throw createConfigError("Missing required config: auth.pass");
+    }
+  } else if (!NO_AUTH.has(auth)) {
+    throw createConfigError("Missing required config: auth.user");
   }
 }
 
@@ -90,8 +108,6 @@ export function validateConfig(
   if (config.ethereal === true) {
     return { ...config, ethereal: true };
   }
-
-  validateAuth(config);
 
   return {
     ...config,

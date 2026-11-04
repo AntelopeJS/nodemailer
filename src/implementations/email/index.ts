@@ -8,12 +8,7 @@ import type {
   TemplateEmailParams,
 } from "@antelopejs/interface-email";
 
-import {
-  createConfigError,
-  isObject,
-  type NodemailerConfig,
-  validateConfig,
-} from "./config";
+import { type NodemailerConfig, validateConfig } from "./config";
 import { buildMailOptions, getFirstRecipient } from "./mail-options";
 import {
   createBatchMessageResponse,
@@ -36,11 +31,8 @@ import {
   initializeStandardTransporter,
 } from "./transporter";
 
-export async function initTransporter(config: unknown): Promise<void> {
-  if (!isObject(config)) {
-    throw createConfigError("Missing configuration");
-  }
-  const parsedConfig = validateConfig(config as NodemailerConfig);
+export async function initTransporter(config: NodemailerConfig): Promise<void> {
+  const parsedConfig = validateConfig(config);
   if (parsedConfig.ethereal === true) {
     await initializeEtherealTransporter();
     return;

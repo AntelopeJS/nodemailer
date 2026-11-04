@@ -1,4 +1,6 @@
 import assert from "node:assert";
+import path from "node:path";
+import { createRuntime, type EmbeddedModuleConfig } from "@antelopejs/core";
 import nodemailer from "nodemailer";
 import { Logging } from "@antelopejs/interface-core/logging";
 import type { EmailParams } from "@antelopejs/interface-email";
@@ -159,6 +161,14 @@ function createSendParams(): EmailParams {
 }
 
 let sandbox: SinonSandbox;
+
+async function startModule(module: EmbeddedModuleConfig): Promise<void> {
+  const root = path.resolve(__dirname, "..", "..");
+  await createRuntime({
+    modules: { nodemailer: { ...module, path: root } },
+    logging: { enabled: false },
+  }).start();
+}
 
 function useSandbox(): void {
   beforeEach(() => {
@@ -352,5 +362,46 @@ describe("Email interface", () => {
       secure: false,
       auth: { user: ETHEREAL_USER, pass: ETHEREAL_PASS },
     });
+  });
+});
+
+describe("Email configuration", () => {
+  it("refuses a secure flag that is not a boolean", async () => {
+    await assert.rejects(
+      () => startModule({ config: { ...DEFAULT_CONFIG, secure: "false" } }),
+      {
+        errors: [new Error("[Email] Invalid config: secure must be a boolean")],
+      },
+    );
+  });
+
+  it("refuses a default sender that is not a string", async () => {
+    await assert.rejects(
+      () =>
+        startModule({ config: { ...DEFAULT_CONFIG, defaults: { from: 5 } } }),
+      {
+        errors: [
+          new Error("[Email] Invalid config: defaults.from must be a string"),
+        ],
+      },
+    );
+  });
+});
+
+describe("Inline templates", () => {
+  useSandbox();
+
+  it("renders nested variables as JSON, as the brevo implementation does", async () => {
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
+
+    await SendTemplate({
+      to: TO_EMAIL,
+      subject: SUBJECT,
+      template: { type: "text", content: "{{ order }} {{ tags }} {{ none }}" },
+      variables: { order: { id: 7 }, tags: ["a", "b"], none: null },
+    });
+
+    assert.equal(getFirstMailOptions(sendMailStub).text, '{"id":7} ["a","b"] ');
   });
 });
