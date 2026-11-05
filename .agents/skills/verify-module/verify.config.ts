@@ -14,20 +14,17 @@ const config: VerifyConfig = {
     contract: {
       globs: ["package.json"],
       funnels: [],
-      containments: [],
       why: "the config keys (`host`, `port`, `secure`, `auth`, `defaults`, `ethereal`) and the email interface range `antelopeJs.implements` and `dependencies` declare",
     },
     outbound: {
       globs: ["src/implementations/email/transporter.ts", "src/implementations/email/config.ts", "src/implementations/email/index.ts"],
       funnels: ["src/implementations/email/transporter.ts"],
-      containments: [],
       why: "every email the module sends leaves through this one SMTP transport with the operator's host, port and credentials: its options decide which server receives what and whether the credentials are sent",
     },
     exposure: null,
     publish: {
       globs: ["package.json", ".release-it.json", "changelogen.config.json", ".github/workflows/release.yml"],
       funnels: [],
-      containments: [],
       why: "the package name and release workflow claim @antelopejs/nodemailer on npm",
     },
   },

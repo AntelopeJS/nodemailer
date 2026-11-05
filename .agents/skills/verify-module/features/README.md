@@ -1,6 +1,6 @@
 # Feature map
 
-One file per feature. `covers:` lists the source globs it owns, `docs:` the pages a verdict judges, `journeys:` the journeys it runs, and `seeded-breaks/<feature>.patch` the break its journeys must catch. `pnpm exec antelopejs-verify map` checks that every user-facing file is covered.
+One file per feature. `covers:` lists the source globs it owns, `docs:` the pages a verdict judges, and `journeys:` the journeys it runs. `pnpm exec antelopejs-verify map` checks that every user-facing file is covered.
 
 The module talks SMTP to the host the operator configures. Journeys point it at a local stand-in (`smtp-sink.ts`) that speaks enough SMTP (EHLO, AUTH PLAIN and LOGIN, MAIL, RCPT, DATA) to record every message. No real mail server is involved.
 
