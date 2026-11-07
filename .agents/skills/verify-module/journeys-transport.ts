@@ -68,4 +68,22 @@ const authRequiresTls: Journey = {
   },
 };
 
-export const transportJourneys = { capabilities, "auth-credentials": authCredentials, "auth-requires-tls": authRequiresTls };
+const authNull: Journey = {
+  title: "with auth set to null, which the config accepts as no credentials, a message reaches an SMTP server that offers no STARTTLS",
+  entryPoint: "`Send` with `auth: null` in the module config",
+  async run(context) {
+    await withSession(
+      context,
+      async (session) => {
+        const sent = await call(session, "Send", "Send", [{ to: "ada@example.com", subject: "Relay", text: "Relay" }]);
+        const seen = await delivered(session, "smtp-log");
+        context.expect(sent.folder, [answered(sent), same("the send succeeded", pick(sent.value, "success"), true)]);
+        context.expect(seen.result.folder, [same("one message was delivered", seen.entries.length, 1),
+          same("the server saw no credentials", [pick(seen.entries[0], "user"), pick(seen.entries[0], "pass")], [null, null])]);
+      },
+      { auth: null },
+    );
+  },
+};
+
+export const transportJourneys = { capabilities, "auth-credentials": authCredentials, "auth-requires-tls": authRequiresTls, "auth-null": authNull };

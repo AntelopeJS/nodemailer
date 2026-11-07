@@ -9,5 +9,5 @@ The module talks SMTP to the host the operator configures. Journeys point it at 
 | [send](send.md) | An application module calls `Send` and gets the server's answer mapped. | send-message, send-failure |
 | [batch](batch.md) | Many messages go out one after the other. | batch-continues, batch-stops |
 | [templates](templates.md) | A message is built from an inline template. | inline-template, provider-template |
-| [transport](transport.md) | The operator configures the SMTP connection; a consumer asks what is supported. | capabilities, auth-credentials, auth-requires-tls |
+| [transport](transport.md) | The operator configures the SMTP connection; a consumer asks what is supported. | capabilities, auth-credentials, auth-requires-tls, auth-null |
 | [smoke](smoke.md) | The fixed journey every verdict runs. | module-dev, send-through-sink |

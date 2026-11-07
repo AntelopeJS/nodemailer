@@ -12,6 +12,7 @@ journeys:
   - capabilities
   - auth-credentials
   - auth-requires-tls
+  - auth-null
 ---
 
 # Transport
@@ -23,6 +24,7 @@ The SMTP connection the operator configures, and what the module tells consumers
 - `capabilities`: `GetCapabilities` names `nodemailer` and exactly the supported features.
 - `auth-credentials`: with `requireTLS: false`, the configured `auth` user and password reach the SMTP server, an explicit `from` replaces `defaults.from` and the priority reaches the message.
 - `auth-requires-tls`: with `auth` and `requireTLS` unset on a connection whose `secure` resolves to `false`, the module sends nothing to a server that refuses STARTTLS.
+- `auth-null`: `auth: null`, which the config accepts as no credentials, sends without requiring STARTTLS and without credentials.
 
 ## How to get to it (user POV)
 
