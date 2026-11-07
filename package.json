@@ -29,14 +29,14 @@
     "provenance": true
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc --skipLibCheck",
     "dev": "ajs project dev -w -p playground",
     "prepack": "pnpm run build",
     "format": "oxfmt .",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "test": "pnpm run build && ajs module test .",
-    "release": "pnpm run lint && pnpm run prepack && release-it",
+    "release": "pnpm run lint && pnpm run typecheck && pnpm run prepack && release-it",
     "format:check": "oxfmt --check .",
     "knip": "knip",
     "prepare": "if [ -e .git ] && command -v git >/dev/null 2>&1 && command -v lefthook >/dev/null 2>&1 && GIT_DIR=.git GIT_WORK_TREE=. git rev-parse --git-dir >/dev/null 2>&1; then GIT_DIR=.git GIT_WORK_TREE=. lefthook install; fi",
