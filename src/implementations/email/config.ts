@@ -20,7 +20,7 @@ export interface NodemailerConfig {
   host?: string;
   port?: number;
   secure?: boolean;
-  /** Require STARTTLS. Defaults to true when auth is set and the resolved `secure` is false. Set to false to allow clear-text authentication. */
+  /** Require STARTTLS. Defaults to true when `auth` holds credentials and the resolved `secure` is false. Set to false to allow clear-text authentication. */
   requireTLS?: boolean;
   auth?: NodemailerAuthConfig;
   defaults?: NodemailerDefaultsConfig;
@@ -138,7 +138,7 @@ export function buildStandardTransportOptions(
     host: config.host,
     port: config.port,
     secure,
-    requireTLS: config.requireTLS ?? (config.auth !== undefined && !secure),
+    requireTLS: config.requireTLS ?? (Boolean(config.auth) && !secure),
   };
   if (config.auth) {
     transportOptions.auth = config.auth;

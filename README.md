@@ -56,15 +56,15 @@ export default defineConfig({
 });
 ```
 
-| Key             | Description                                                                                                                                  |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `host`          | SMTP host. Required unless `ethereal` is `true`.                                                                                             |
-| `port`          | SMTP port, as a number. Required unless `ethereal` is `true`.                                                                                |
-| `secure`        | Use TLS from the start of the connection. Defaults to `true` on port 465 and `false` otherwise.                                              |
-| `requireTLS`    | Require STARTTLS. Defaults to `true` when `auth` is set and `secure` resolves to `false`. Set to `false` to allow clear-text authentication. |
-| `auth`          | Optional SMTP credentials, `{ user, pass }`. Both must be non-empty when set.                                                                |
-| `defaults.from` | Sender used when a message has no `from`.                                                                                                    |
-| `ethereal`      | Set to `true` in development to send through a temporary [Ethereal](https://ethereal.email) account instead.                                 |
+| Key             | Description                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `host`          | SMTP host. Required unless `ethereal` is `true`.                                                                                                        |
+| `port`          | SMTP port, as a number. Required unless `ethereal` is `true`.                                                                                           |
+| `secure`        | Use TLS from the start of the connection. Defaults to `true` on port 465 and `false` otherwise.                                                         |
+| `requireTLS`    | Require STARTTLS. Defaults to `true` when `auth` holds credentials and `secure` resolves to `false`. Set to `false` to allow clear-text authentication. |
+| `auth`          | Optional SMTP credentials, `{ user, pass }`. Both must be non-empty when set.                                                                           |
+| `defaults.from` | Sender used when a message has no `from`.                                                                                                               |
+| `ethereal`      | Set to `true` in development to send through a temporary [Ethereal](https://ethereal.email) account instead.                                            |
 
 With `ethereal: true`, the module ignores the other keys, creates an account at startup, logs its address and uses it as the default sender. Each sent message logs a preview URL where you can read it.
 
