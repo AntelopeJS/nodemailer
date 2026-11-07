@@ -1,6 +1,6 @@
 import type { Journey } from "@antelopejs/tooling-configs/verify";
 
-import { answered, call, delivered, pick, same, withSession } from "./session.ts";
+import { answered, call, delivered, header, pick, same, withSession } from "./session.ts";
 
 const capabilities: Journey = {
   title: "GetCapabilities names the provider and the features the module supports",
@@ -40,6 +40,7 @@ const authCredentials: Journey = {
         context.expect(seen.result.folder, [
           same("the server saw the configured credentials", [pick(seen.entries[0], "user"), pick(seen.entries[0], "pass")], ["mailer", "s3cret"]),
           same("the explicit sender replaces the configured one", pick(seen.entries[0], "from"), "boss@example.com"),
+          same("the priority reaches the message", header(seen.entries[0], "X-Priority"), "1 (Highest)"),
         ]);
       },
       { auth: { user: "mailer", pass: "s3cret" }, requireTLS: false },
@@ -47,4 +48,21 @@ const authCredentials: Journey = {
   },
 };
 
-export const transportJourneys = { capabilities, "auth-credentials": authCredentials };
+const authRequiresTls: Journey = {
+  title: "with auth on a connection that is not secure and requireTLS unset, the module refuses to send the credentials in clear text to a server without STARTTLS",
+  entryPoint: "`Send` with `auth` and no `requireTLS` in the module config against an SMTP server that refuses STARTTLS",
+  async run(context) {
+    await withSession(
+      context,
+      async (session) => {
+        const sent = await call(session, "Send", "Send", [{ to: "ada@example.com", subject: "Secret", text: "Secret" }]);
+        const seen = await delivered(session, "smtp-log");
+        context.expect(sent.folder, [answered(sent), same("the send failed", pick(sent.value, "success"), false)]);
+        context.expect(seen.result.folder, [same("nothing was delivered and no credentials were sent", seen.entries.length, 0)]);
+      },
+      { auth: { user: "mailer", pass: "s3cret" } },
+    );
+  },
+};
+
+export const transportJourneys = { capabilities, "auth-credentials": authCredentials, "auth-requires-tls": authRequiresTls };
