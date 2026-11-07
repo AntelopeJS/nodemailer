@@ -3,6 +3,8 @@ covers:
   - src/implementations/email/mail-options.ts
   - src/implementations/email/responses.ts
   - src/implementations/email/index.ts
+  - src/implementations/email/transporter.ts
+  - src/implementations/email/config.ts
 docs:
   - README.md
 journeys:

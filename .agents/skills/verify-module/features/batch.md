@@ -2,6 +2,7 @@
 covers:
   - src/implementations/email/index.ts
   - src/implementations/email/responses.ts
+  - src/implementations/email/mail-options.ts
 docs:
   - README.md
 journeys:
