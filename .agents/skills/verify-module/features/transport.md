@@ -18,7 +18,7 @@ The SMTP connection the operator configures, and what the module tells consumers
 ## Sub-features
 
 - `capabilities`: `GetCapabilities` names `nodemailer` and exactly the supported features.
-- `auth-credentials`: with `requireTLS: false`, the configured `auth` user and password reach the SMTP server, and an explicit `from` replaces `defaults.from`, and the priority reaches the message.
+- `auth-credentials`: with `requireTLS: false`, the configured `auth` user and password reach the SMTP server, an explicit `from` replaces `defaults.from` and the priority reaches the message.
 - `auth-requires-tls`: with `auth` and `requireTLS` unset on a connection whose `secure` resolves to `false`, the module sends nothing to a server that refuses STARTTLS.
 
 ## How to get to it (user POV)

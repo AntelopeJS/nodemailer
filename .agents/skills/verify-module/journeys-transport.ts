@@ -1,5 +1,7 @@
 import type { Journey } from "@antelopejs/tooling-configs/verify";
 
+import { isString } from "./json.ts";
+
 import { answered, call, delivered, header, pick, same, withSession } from "./session.ts";
 
 const capabilities: Journey = {
@@ -57,8 +59,9 @@ const authRequiresTls: Journey = {
       async (session) => {
         const sent = await call(session, "Send", "Send", [{ to: "ada@example.com", subject: "Secret", text: "Secret" }]);
         const seen = await delivered(session, "smtp-log");
-        context.expect(sent.folder, [answered(sent), same("the send failed", pick(sent.value, "success"), false)]);
-        context.expect(seen.result.folder, [same("nothing was delivered and no credentials were sent", seen.entries.length, 0)]);
+        const message = pick(sent.value, "error", "message");
+        context.expect(sent.folder, [answered(sent), same("the send failed", pick(sent.value, "success"), false), same("the failure names STARTTLS", isString(message) && message.includes("STARTTLS"), true)]);
+        context.expect(seen.result.folder, [same("nothing was delivered", seen.entries.length, 0)]);
       },
       { auth: { user: "mailer", pass: "s3cret" } },
     );
