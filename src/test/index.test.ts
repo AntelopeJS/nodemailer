@@ -388,6 +388,37 @@ describe("Email configuration", () => {
   });
 });
 
+type AuthSetting = null | false | 0 | "" | { user: string; pass: string };
+
+describe("STARTTLS default", () => {
+  useSandbox();
+
+  async function assertRequireTLS(
+    auth: AuthSetting,
+    expected: boolean,
+  ): Promise<void> {
+    const { createTransport } = stubTransport(sandbox);
+    await startModule({ config: { ...DEFAULT_CONFIG, secure: false, auth } });
+    const options = createTransport.getCall(0)?.args[0];
+    assert.ok(
+      options && "requireTLS" in options,
+      "Expected requireTLS in the transport options",
+    );
+    assert.equal(options.requireTLS, expected);
+  }
+
+  const noCredentials: AuthSetting[] = [null, false, 0, ""];
+  for (const auth of noCredentials) {
+    it(`does not require STARTTLS when auth is ${JSON.stringify(auth)}`, async () => {
+      await assertRequireTLS(auth, false);
+    });
+  }
+
+  it("requires STARTTLS when auth holds credentials", async () => {
+    await assertRequireTLS({ user: "smtp-user", pass: "smtp-secret" }, true);
+  });
+});
+
 describe("Inline templates", () => {
   useSandbox();
 
