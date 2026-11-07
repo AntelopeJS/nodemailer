@@ -91,6 +91,8 @@ function handleCommand(socket: Socket, state: Connection, line: string): void {
     socket.write(`354 go ahead${CRLF}`);
   } else if (verb === "QUIT") {
     socket.end(`221 bye${CRLF}`);
+  } else if (verb === "STAR") {
+    socket.write(`502 STARTTLS not offered${CRLF}`);
   } else {
     socket.write(`250 ok${CRLF}`);
   }

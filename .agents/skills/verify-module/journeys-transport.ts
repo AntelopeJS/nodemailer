@@ -28,8 +28,8 @@ const capabilities: Journey = {
 };
 
 const authCredentials: Journey = {
-  title: "the configured auth user and password reach the SMTP server, and a message with a priority and an explicit sender keeps both",
-  entryPoint: "`Send` with `auth` in the module config against an SMTP server that offers AUTH",
+  title: "with requireTLS false, the configured auth user and password reach the SMTP server, and a message with a priority and an explicit sender keeps both",
+  entryPoint: "`Send` with `auth` and `requireTLS: false` in the module config against an SMTP server that offers AUTH",
   async run(context) {
     await withSession(
       context,
@@ -42,7 +42,7 @@ const authCredentials: Journey = {
           same("the explicit sender replaces the configured one", pick(seen.entries[0], "from"), "boss@example.com"),
         ]);
       },
-      { auth: { user: "mailer", pass: "s3cret" } },
+      { auth: { user: "mailer", pass: "s3cret" }, requireTLS: false },
     );
   },
 };
