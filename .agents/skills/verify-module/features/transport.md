@@ -5,6 +5,7 @@ covers:
   - src/implementations/email/transporter.ts
   - src/implementations/email/index.ts
   - src/implementations/email/mail-options.ts
+  - src/implementations/email/responses.ts
 docs:
   - README.md
 journeys:
