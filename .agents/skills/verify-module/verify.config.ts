@@ -14,7 +14,7 @@ const config: VerifyConfig = {
     contract: {
       globs: ["package.json"],
       funnels: [],
-      why: "the config keys (`host`, `port`, `secure`, `auth`, `defaults`, `ethereal`) and the email interface range `antelopeJs.implements` and `dependencies` declare",
+      why: "the config keys (`host`, `port`, `secure`, `auth`, `requireTLS`, `defaults`, `ethereal`) and the email interface range `antelopeJs.implements` and `dependencies` declare",
     },
     outbound: {
       globs: ["src/implementations/email/transporter.ts", "src/implementations/email/config.ts", "src/implementations/email/index.ts"],

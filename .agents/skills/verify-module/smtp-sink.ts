@@ -10,7 +10,7 @@ export interface Delivered {
   pass: string | null;
 }
 
-/** The stand-in for an SMTP server: it records every message and refuses recipients that contain `reject`. */
+/** The stand-in for an SMTP server: it records every message, refuses recipients that contain `reject`, and answers `STARTTLS` with 502. */
 export interface SmtpSink {
   port: number;
   url: string;
@@ -91,6 +91,8 @@ function handleCommand(socket: Socket, state: Connection, line: string): void {
     socket.write(`354 go ahead${CRLF}`);
   } else if (verb === "QUIT") {
     socket.end(`221 bye${CRLF}`);
+  } else if (line.toUpperCase() === "STARTTLS") {
+    socket.write(`502 STARTTLS not offered${CRLF}`);
   } else {
     socket.write(`250 ok${CRLF}`);
   }
