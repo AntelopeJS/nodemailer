@@ -33,7 +33,9 @@ export function logPreviewUrl(info: SMTPTransport.SentMessageInfo): void {
 }
 
 function getMessageId(info: SMTPTransport.SentMessageInfo): string | undefined {
-  return isString(info.messageId) ? info.messageId : undefined;
+  return Object.hasOwn(info, "messageId") && isString(info.messageId)
+    ? info.messageId
+    : undefined;
 }
 
 export function createSuccessResponse(
