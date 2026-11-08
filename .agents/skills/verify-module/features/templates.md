@@ -7,6 +7,7 @@ docs:
   - README.md
 journeys:
   - inline-template
+  - literal-template
   - provider-template
 ---
 
@@ -17,6 +18,7 @@ A message is built from an inline template; provider templates are not supported
 ## Sub-features
 
 - `inline-template`: every `{{ variable }}` occurrence is replaced and a nested value is written as JSON, as html or as text, with the call's subject.
+- `literal-template`: a variable name matches only itself, `$&` in a value stays as written, a value is never scanned for placeholders, and a name such as `(x` is sent instead of rejecting.
 - `provider-template`: a template id is answered `NOT_SUPPORTED` and nothing is sent.
 
 ## How to get to it (user POV)
