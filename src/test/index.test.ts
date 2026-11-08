@@ -445,7 +445,8 @@ describe("Inline templates", () => {
       subject: SUBJECT,
       template: {
         type: "text",
-        content: "{{ price }} | {{ aXb }} | {{ a.b }} | {{ first }}",
+        content:
+          "{{ price }} | {{ aXb }} | {{ a.b }} | {{ first }} | {{ constructor }}",
       },
       variables: {
         price: "$& off",
@@ -457,7 +458,7 @@ describe("Inline templates", () => {
 
     assert.equal(
       getFirstMailOptions(sendMailStub).text,
-      "$& off | {{ aXb }} | dot | {{ second }}",
+      "$& off | {{ aXb }} | dot | {{ second }} | {{ constructor }}",
     );
   });
 
@@ -474,5 +475,21 @@ describe("Inline templates", () => {
 
     assert.equal(result.success, true);
     assert.equal(getFirstMailOptions(sendMailStub).text, "1");
+  });
+
+  it("resolves promptly when a placeholder is never closed", async () => {
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
+    const content = `{{${" ".repeat(5000)}`;
+
+    const result = await SendTemplate({
+      to: TO_EMAIL,
+      subject: SUBJECT,
+      template: { type: "text", content },
+      variables: { name: "Antelope" },
+    });
+
+    assert.equal(result.success, true);
+    assert.equal(getFirstMailOptions(sendMailStub).text, content);
   });
 });
