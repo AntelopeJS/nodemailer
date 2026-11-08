@@ -50,14 +50,14 @@ const literalTemplate: Journey = {
           variables: { price: "$& off", "a.b": "dot", first: "{{ second }}", second: "leaked" },
         },
       ]);
-      const bracket = await call(session, "SendTemplate bracket", "SendTemplate", [{ to: "ada@example.com", subject: "Bracket", template: { type: "text", content: "{{ (x }}" }, variables: { "(x": 1 } }]);
+      const bracket = await call(session, "SendTemplate bracket", "SendTemplate", [{ to: "ada@example.com", subject: "Bracket", template: { type: "text", content: "{{ (x }}" }, variables: { "(x": "bracket-name-sent" } }]);
       const seen = await delivered(session, "smtp-log");
       context.expect(literal.folder, [answered(literal), same("the literal send succeeded", pick(literal.value, "success"), true)]);
       context.expect(bracket.folder, [answered(bracket), same("the bracket send succeeded", pick(bracket.value, "success"), true)]);
       context.expect(seen.result.folder, [
         same("two messages were delivered", seen.entries.length, 2),
         same("names match literally and values are verbatim", bodyHas(seen.entries[0], "$& off | {{ aXb }} | dot | {{ second }}"), true),
-        same("an unbalanced bracket name is replaced", bodyHas(seen.entries[1], "1"), true),
+        same("an unbalanced bracket name is replaced", bodyHas(seen.entries[1], "bracket-name-sent"), true),
       ]);
     });
   },
