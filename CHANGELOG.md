@@ -1,5 +1,46 @@
 # Changelog
 
+## v0.0.9
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.8...v0.0.9)
+
+### 🔥 Performance
+
+- **build:** Skip the lib check in build, keep it in typecheck ([#54](https://github.com/AntelopeJS/nodemailer/pull/54))
+
+### 🩹 Fixes
+
+- **verify:** Stop the auth-credentials journey hanging on STARTTLS ([#53](https://github.com/AntelopeJS/nodemailer/pull/53))
+- **verify:** Cover the files each feature's journeys assert on ([#55](https://github.com/AntelopeJS/nodemailer/pull/55))
+- **email:** Require STARTTLS only when auth holds credentials ([#56](https://github.com/AntelopeJS/nodemailer/pull/56))
+- **email:** Resolve Send to SEND_FAILED for any rejection value ([#58](https://github.com/AntelopeJS/nodemailer/pull/58))
+- **email:** Match template placeholders literally and insert values verbatim ([#57](https://github.com/AntelopeJS/nodemailer/pull/57))
+- **email:** Report provider-hosted templates as unsupported ([#60](https://github.com/AntelopeJS/nodemailer/pull/60))
+
+### 📖 Documentation
+
+- **readme:** Link the package to AntelopeJS and AntelopeJS DMS ([50d54a4](https://github.com/AntelopeJS/nodemailer/commit/50d54a4))
+
+### 📦 Build
+
+- **deps:** Bump @antelopejs packages to the 2026-11-06 releases ([#51](https://github.com/AntelopeJS/nodemailer/pull/51))
+- **deps:** Bump @antelopejs/tooling-configs to 0.3.4 ([#52](https://github.com/AntelopeJS/nodemailer/pull/52))
+- **deps:** Bump @antelopejs/tooling-configs to 0.4.0 ([#59](https://github.com/AntelopeJS/nodemailer/pull/59))
+
+### 🏡 Chore
+
+- **verify:** Remove seeded runs from the verification skill ([#48](https://github.com/AntelopeJS/nodemailer/pull/48))
+- **ci:** Remove the weekly mutation caller ([#49](https://github.com/AntelopeJS/nodemailer/pull/49))
+
+### 🤖 CI
+
+- Call ci-node.yml@v1 ([#50](https://github.com/AntelopeJS/nodemailer/pull/50))
+- **release:** Accept an exact release version ([#61](https://github.com/AntelopeJS/nodemailer/pull/61))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli ([@Upd4ting](http://github.com/Upd4ting))
+
 ## v0.0.8
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.7...v0.0.8)
