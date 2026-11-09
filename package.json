@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@antelopejs/interface-core": ">=0.2.4 <1.0.0",
-    "@antelopejs/interface-email": ">=0.1.0 <0.2.0",
+    "@antelopejs/interface-email": "file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz",
     "nodemailer": "^6.10.1"
   },
   "devDependencies": {
@@ -73,6 +73,11 @@
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.8.1",
+  "pnpm": {
+    "overrides": {
+      "@antelopejs/interface-email": "file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz"
+    }
+  },
   "antelopeJs": {
     "implements": [
       "@antelopejs/interface-email"

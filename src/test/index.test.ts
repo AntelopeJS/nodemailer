@@ -198,6 +198,18 @@ describe("Email interface", () => {
     assert.equal(capabilities.features.priority, true);
   });
 
+  it("reports provider templates as unsupported, as SendTemplate answers them", async () => {
+    const { features } = await GetCapabilities();
+    const result = await SendTemplate({
+      to: TO_EMAIL,
+      template: { id: "provider-template" },
+    });
+
+    assert.equal(result.success, false);
+    assert.equal(features.providerTemplates, false);
+    assert.equal(features.templates, true);
+  });
+
   it("sends emails with mapped nodemailer options", async () => {
     const sendMailStub = await initializeTransporterWithStubs(sandbox);
     sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));

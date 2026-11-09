@@ -1,0 +1,4 @@
+@antelopejs/interface-email	package.json	dependencies	>=0.1.0 <0.2.0
+@antelopejs/interface-email	playground/package.json	dependencies	>=0.1.0 <1.0.0
+@antelopejs/interface-email	package.json	pnpm.overrides	
+@antelopejs/interface-email	playground/package.json	pnpm.overrides	
