@@ -113,6 +113,7 @@ function getProviderFeatures(): ProviderFeatures {
   return {
     batch: true,
     templates: true,
+    providerTemplates: false,
     scheduling: false,
     openTracking: false,
     clickTracking: false,
