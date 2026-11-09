@@ -435,4 +435,61 @@ describe("Inline templates", () => {
 
     assert.equal(getFirstMailOptions(sendMailStub).text, '{"id":7} ["a","b"] ');
   });
+
+  it("matches variable names literally and inserts values verbatim", async () => {
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
+
+    await SendTemplate({
+      to: TO_EMAIL,
+      subject: SUBJECT,
+      template: {
+        type: "text",
+        content:
+          "{{ price }} | {{ aXb }} | {{ a.b }} | {{ first }} | {{ constructor }}",
+      },
+      variables: {
+        price: "$& off",
+        "a.b": "dot",
+        first: "{{ second }}",
+        second: "leaked",
+      },
+    });
+
+    assert.equal(
+      getFirstMailOptions(sendMailStub).text,
+      "$& off | {{ aXb }} | dot | {{ second }} | {{ constructor }}",
+    );
+  });
+
+  it("resolves when a variable name is not a valid regular expression", async () => {
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
+
+    const result = await SendTemplate({
+      to: TO_EMAIL,
+      subject: SUBJECT,
+      template: { type: "text", content: "{{ (x }}" },
+      variables: { "(x": 1 },
+    });
+
+    assert.equal(result.success, true);
+    assert.equal(getFirstMailOptions(sendMailStub).text, "1");
+  });
+
+  it("resolves promptly when a placeholder is never closed", async () => {
+    const sendMailStub = await initializeTransporterWithStubs(sandbox);
+    sendMailStub.resolves(createSentMessageInfo(MESSAGE_ID));
+    const content = `{{${" ".repeat(5000)}`;
+
+    const result = await SendTemplate({
+      to: TO_EMAIL,
+      subject: SUBJECT,
+      template: { type: "text", content },
+      variables: { name: "Antelope" },
+    });
+
+    assert.equal(result.success, true);
+    assert.equal(getFirstMailOptions(sendMailStub).text, content);
+  });
 });

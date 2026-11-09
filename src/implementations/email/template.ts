@@ -7,6 +7,8 @@ import type {
   TemplateEmailParams,
 } from "@antelopejs/interface-email";
 
+const PLACEHOLDER = /\{\{([^{}]*)\}\}/g;
+
 function isStructured(value: JsonValue): value is JsonValue[] | JsonObject {
   return typeof value === "object" && value !== null;
 }
@@ -22,14 +24,12 @@ export function renderTemplate(
   template: InlineTemplate,
   variables: NonNullable<TemplateEmailParams["variables"]>,
 ): string {
-  let content = template.content;
-  for (const [key, value] of Object.entries(variables)) {
-    content = content.replace(
-      new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`, "g"),
-      renderValue(value),
-    );
-  }
-  return content;
+  return template.content.replace(PLACEHOLDER, (placeholder, raw: string) => {
+    const name = raw.trim();
+    return Object.hasOwn(variables, name)
+      ? renderValue(variables[name])
+      : placeholder;
+  });
 }
 
 export function isProviderTemplate(

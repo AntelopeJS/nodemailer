@@ -37,4 +37,30 @@ const providerTemplate: Journey = {
   },
 };
 
-export const templateJourneys = { "inline-template": inlineTemplate, "provider-template": providerTemplate };
+const literalTemplate: Journey = {
+  title: "variable names match literally, values are inserted verbatim, and a name that is no valid regular expression is still sent",
+  entryPoint: "`SendTemplate` with `$&` in a value, a dotted name and an unbalanced bracket through core",
+  async run(context) {
+    await withSession(context, async (session) => {
+      const literal = await call(session, "SendTemplate literal", "SendTemplate", [
+        {
+          to: "ada@example.com",
+          subject: "Literal",
+          template: { type: "text", content: "{{ price }} | {{ aXb }} | {{ a.b }} | {{ first }}" },
+          variables: { price: "$& off", "a.b": "dot", first: "{{ second }}", second: "leaked" },
+        },
+      ]);
+      const bracket = await call(session, "SendTemplate bracket", "SendTemplate", [{ to: "ada@example.com", subject: "Bracket", template: { type: "text", content: "{{ (x }}" }, variables: { "(x": "bracket-name-sent" } }]);
+      const seen = await delivered(session, "smtp-log");
+      context.expect(literal.folder, [answered(literal), same("the literal send succeeded", pick(literal.value, "success"), true)]);
+      context.expect(bracket.folder, [answered(bracket), same("the bracket send succeeded", pick(bracket.value, "success"), true)]);
+      context.expect(seen.result.folder, [
+        same("two messages were delivered", seen.entries.length, 2),
+        same("names match literally and values are verbatim", bodyHas(seen.entries[0], "$& off | {{ aXb }} | dot | {{ second }}"), true),
+        same("an unbalanced bracket name is replaced", bodyHas(seen.entries[1], "bracket-name-sent"), true),
+      ]);
+    });
+  },
+};
+
+export const templateJourneys = { "inline-template": inlineTemplate, "literal-template": literalTemplate, "provider-template": providerTemplate };
