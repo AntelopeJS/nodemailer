@@ -40,15 +40,22 @@ export async function initTransporter(config: NodemailerConfig): Promise<void> {
   initializeStandardTransporter(parsedConfig);
 }
 
+const UNDESCRIBABLE_ERROR_MESSAGE =
+  "sendMail failed with a value that has no string form";
+
 export async function Send(params: EmailParams): Promise<EmailResponse> {
   try {
     const info = await getTransporter().sendMail(buildMailOptions(params));
     logPreviewUrl(info);
     return createSuccessResponse(info);
   } catch (error) {
-    return createFailureResponse(
-      error instanceof Error ? error.message : String(error),
-    );
+    try {
+      return createFailureResponse(
+        error instanceof Error ? error.message : String(error),
+      );
+    } catch {
+      return createFailureResponse(UNDESCRIBABLE_ERROR_MESSAGE);
+    }
   }
 }
 
