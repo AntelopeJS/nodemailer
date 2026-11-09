@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@antelopejs/interface-email': file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz
-
 importers:
 
   .:
@@ -15,8 +12,8 @@ importers:
         specifier: '>=0.2.4 <1.0.0'
         version: 0.2.4
       '@antelopejs/interface-email':
-        specifier: file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz
-        version: file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz(@antelopejs/interface-core@0.2.4)
+        specifier: '>=0.2.0 <0.3.0'
+        version: 0.2.0(@antelopejs/interface-core@0.2.4)
       nodemailer:
         specifier: ^6.10.1
         version: 6.10.1
@@ -86,9 +83,8 @@ packages:
   '@antelopejs/interface-core@0.4.0':
     resolution: {integrity: sha512-IPX6dtt3KHknclN4mLOYeRYL2Odz1Pts+dtaZul62NghsBUX/0OFHD4Qhoaf+Beva4hjInbaF918ajr4Z5HVWQ==}
 
-  '@antelopejs/interface-email@file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz':
-    resolution: {integrity: sha512-XT4XxGq04nWuF96XxnBFEtkEwP8PMJstc9IgdzUeP2+mq77JyuCdtQj1g5LOADi1QqTiBtPH89rYjSfSzAf2nA==, tarball: file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz}
-    version: 0.1.1
+  '@antelopejs/interface-email@0.2.0':
+    resolution: {integrity: sha512-+MF/JZADoa0UPZQM7FICM+rjg9Sg9tzb+SjpXkIu0Df2lPv8QVEI021lCCAHecb8rXjUP+9unWCwKRsBytKVVg==}
     peerDependencies:
       '@antelopejs/interface-core': '>=0.2.4 <1.0.0'
 
@@ -2543,7 +2539,7 @@ snapshots:
     dependencies:
       reflect-metadata: 0.2.2
 
-  '@antelopejs/interface-email@file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz(@antelopejs/interface-core@0.2.4)':
+  '@antelopejs/interface-email@0.2.0(@antelopejs/interface-core@0.2.4)':
     dependencies:
       '@antelopejs/interface-core': 0.2.4
 

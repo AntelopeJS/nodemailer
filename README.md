@@ -98,10 +98,10 @@ const result = await Send({
 
 <!-- antelopejs-docs-compat:start -->
 
-| Package                       | Supported                                               | Tested with                                             |
-| ----------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
-| `@antelopejs/interface-core`  | `>=0.2.4 <1.0.0`                                        | `0.2.4`                                                 |
-| `@antelopejs/interface-email` | `file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz` | `file:.tgz-deps/antelopejs-interface-email-d5d3dad.tgz` |
+| Package                       | Supported        | Tested with |
+| ----------------------------- | ---------------- | ----------- |
+| `@antelopejs/interface-core`  | `>=0.2.4 <1.0.0` | `0.2.4`     |
+| `@antelopejs/interface-email` | `>=0.2.0 <0.3.0` | `0.2.0`     |
 
 <!-- antelopejs-docs-compat:end -->
 
