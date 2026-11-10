@@ -1,6 +1,6 @@
 import { Logging } from "@antelopejs/interface-core/logging";
 import nodemailer from "nodemailer";
-import type SMTPTransport from "nodemailer/lib/smtp-transport";
+import type SMTPPool from "nodemailer/lib/smtp-pool";
 import type {
   BatchEmailMessage,
   BatchEmailMessageResponse,
@@ -25,21 +25,21 @@ function isString(value: unknown): value is string {
   return typeof value === "string";
 }
 
-export function logPreviewUrl(info: SMTPTransport.SentMessageInfo): void {
-  const previewUrl = nodemailer.getTestMessageUrl(info);
+export function logPreviewUrl(info: SMTPPool.SentMessageInfo): void {
+  const previewUrl = nodemailer.getTestMessageUrl({ ...info, pending: [] });
   if (previewUrl) {
     Logging.Info(`${EMAIL_PREFIX} Preview: ${previewUrl}`);
   }
 }
 
-function getMessageId(info: SMTPTransport.SentMessageInfo): string | undefined {
+function getMessageId(info: SMTPPool.SentMessageInfo): string | undefined {
   return Object.hasOwn(info, "messageId") && isString(info.messageId)
     ? info.messageId
     : undefined;
 }
 
 export function createSuccessResponse(
-  info: SMTPTransport.SentMessageInfo,
+  info: SMTPPool.SentMessageInfo,
 ): EmailResponse {
   const messageId = getMessageId(info);
   if (messageId === undefined) {

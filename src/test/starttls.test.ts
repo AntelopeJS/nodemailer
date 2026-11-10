@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import net from "node:net";
 
+import { destroy } from "..";
 import { initTransporter, Send } from "../implementations/email";
 
 function isAddressInfo(
@@ -12,6 +13,7 @@ function isAddressInfo(
 interface PlainSmtpServer {
   port: number;
   commands: string[];
+  openConnections: () => number;
   close: () => Promise<void>;
 }
 
@@ -75,6 +77,7 @@ async function startPlainSmtpServer(): Promise<PlainSmtpServer> {
   return {
     port,
     commands,
+    openConnections: () => sockets.size,
     close: () =>
       new Promise<void>((resolve) => {
         for (const socket of sockets) {
@@ -131,5 +134,54 @@ describe("SMTP session without STARTTLS", () => {
 
     assert.equal(result.success, true);
     assert.equal(authCommands(server).length, 1);
+  });
+});
+
+function waitForClose(server: PlainSmtpServer): Promise<void> {
+  return new Promise((resolve) => {
+    const poll = setInterval(() => {
+      if (server.openConnections() === 0) {
+        clearInterval(poll);
+        resolve();
+      }
+    }, 5);
+  });
+}
+
+describe("SMTP connection reuse", () => {
+  let server: PlainSmtpServer;
+
+  beforeEach(async () => {
+    server = await startPlainSmtpServer();
+  });
+
+  afterEach(async () => {
+    destroy();
+    await server.close();
+  });
+
+  it("sends consecutive messages over one SMTP session", async () => {
+    const first = await sendWithAuth(server, { requireTLS: false });
+    const second = await Send({
+      from: "sender@example.com",
+      to: "to@example.com",
+      subject: "Second",
+      text: "body",
+    });
+
+    assert.equal(first.success, true);
+    assert.equal(second.success, true);
+    assert.equal(authCommands(server).length, 1);
+    assert.equal(server.openConnections(), 1);
+  });
+
+  it("closes the SMTP session when the module is destroyed", async () => {
+    await sendWithAuth(server, { requireTLS: false });
+    assert.equal(server.openConnections(), 1);
+
+    destroy();
+    await waitForClose(server);
+
+    assert.equal(server.openConnections(), 0);
   });
 });

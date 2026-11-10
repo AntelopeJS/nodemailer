@@ -5,6 +5,7 @@ import {
   type NodemailerConfig,
 } from "./implementations/email/config";
 import { initTransporter } from "./implementations/email";
+import { closeTransporter } from "./implementations/email/transporter";
 
 export async function construct(
   config: NodemailerConfig | undefined,
@@ -20,6 +21,8 @@ export async function construct(
 
 export function start(): void {}
 
-export function destroy(): void {}
+export function destroy(): void {
+  closeTransporter();
+}
 
 export function stop(): void {}

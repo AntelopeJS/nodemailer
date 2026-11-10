@@ -1,6 +1,6 @@
 import { Logging } from "@antelopejs/interface-core/logging";
 import nodemailer, { type Transporter } from "nodemailer";
-import type SMTPTransport from "nodemailer/lib/smtp-transport";
+import type SMTPPool from "nodemailer/lib/smtp-pool";
 
 import {
   buildEtherealTransportOptions,
@@ -10,7 +10,7 @@ import {
   type StandardNodemailerConfig,
 } from "./config";
 
-type SMTPTransporter = Transporter<SMTPTransport.SentMessageInfo>;
+type SMTPTransporter = Transporter<SMTPPool.SentMessageInfo>;
 
 const TRANSPORTER_NOT_INITIALIZED = "Transporter is not initialized";
 
@@ -48,6 +48,11 @@ export function initializeStandardTransporter(
     nodemailer.createTransport(buildStandardTransportOptions(config)),
   );
   setDefaultFrom(config.defaults?.from);
+}
+
+export function closeTransporter(): void {
+  transporter?.close();
+  transporter = null;
 }
 
 export function getDefaultFrom(): string | undefined {
