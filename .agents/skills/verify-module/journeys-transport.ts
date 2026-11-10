@@ -16,6 +16,7 @@ const capabilities: Journey = {
         same("the supported features are exactly the module's", pick(answer.value, "features"), {
           batch: true,
           templates: true,
+          providerTemplates: false,
           scheduling: false,
           openTracking: false,
           clickTracking: false,
