@@ -1,4 +1,4 @@
-import type SMTPTransport from "nodemailer/lib/smtp-transport";
+import type SMTPPool from "nodemailer/lib/smtp-pool";
 import type nodemailer from "nodemailer";
 
 export const EMAIL_PREFIX = "[Email]";
@@ -118,8 +118,9 @@ export function validateConfig(
 
 export function buildEtherealTransportOptions(
   account: EtherealAccount,
-): SMTPTransport.Options {
+): SMTPPool.Options {
   return {
+    pool: true,
     host: ETHEREAL_HOST,
     port: ETHEREAL_PORT,
     secure: false,
@@ -132,9 +133,10 @@ export function buildEtherealTransportOptions(
 
 export function buildStandardTransportOptions(
   config: StandardNodemailerConfig,
-): SMTPTransport.Options {
+): SMTPPool.Options {
   const secure = config.secure ?? config.port === SECURE_PORT;
-  const transportOptions: SMTPTransport.Options = {
+  const transportOptions: SMTPPool.Options = {
+    pool: true,
     host: config.host,
     port: config.port,
     secure,

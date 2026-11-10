@@ -369,6 +369,7 @@ describe("Email interface", () => {
 
     assert.equal(options.from, ETHEREAL_USER);
     assert.deepStrictEqual(transportCall.args[0], {
+      pool: true,
       host: ETHEREAL_HOST,
       port: ETHEREAL_PORT,
       secure: false,
