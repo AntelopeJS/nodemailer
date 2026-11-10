@@ -3,6 +3,12 @@ import net from "node:net";
 
 import { initTransporter, Send } from "../implementations/email";
 
+function isAddressInfo(
+  address: ReturnType<net.Server["address"]>,
+): address is net.AddressInfo {
+  return address !== null && typeof address !== "string";
+}
+
 interface PlainSmtpServer {
   port: number;
   commands: string[];
@@ -64,7 +70,7 @@ async function startPlainSmtpServer(): Promise<PlainSmtpServer> {
     server.listen(0, "127.0.0.1", resolve);
   });
   const address = server.address();
-  assert(address instanceof Object);
+  assert(isAddressInfo(address));
   const { port } = address;
   return {
     port,
