@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.0.10
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.9...v0.0.10)
+
+### 🔥 Performance
+
+- **email:** Reuse pooled SMTP connections across sends ([#64](https://github.com/AntelopeJS/nodemailer/pull/64))
+
+### 📦 Build
+
+- **deps:** Bump @antelopejs/tooling-configs to 0.5.0 ([#62](https://github.com/AntelopeJS/nodemailer/pull/62))
+- **deps:** Bump @antelopejs/tooling-configs to 0.5.1 ([#63](https://github.com/AntelopeJS/nodemailer/pull/63))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli ([@Upd4ting](http://github.com/Upd4ting))
+
 ## v0.0.9
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.8...v0.0.9)
