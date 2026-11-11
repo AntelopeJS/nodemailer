@@ -66,7 +66,7 @@ export default defineConfig({
 | `defaults.from` | Sender used when a message has no `from`.                                                                                                               |
 | `ethereal`      | Set to `true` in development to send through a temporary [Ethereal](https://ethereal.email) account instead.                                            |
 
-With `ethereal: true`, the module ignores the other keys, creates an account at startup, logs its address and uses it as the default sender. Each sent message logs a preview URL where you can read it.
+With `ethereal: true`, the module ignores the other keys, creates an account at startup, logs its address and uses it as the default sender. Each sent message logs a preview URL where you can read it. If the Ethereal account API fails or gives no answer within 10 seconds, the module logs one warning and starts without a transporter, and each send returns a failure.
 
 ## Quick start
 

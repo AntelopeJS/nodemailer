@@ -41,7 +41,9 @@ type ResolvedNodemailerConfig =
   | StandardNodemailerConfig
   | EtherealNodemailerConfig;
 
-type EtherealAccount = Awaited<ReturnType<typeof nodemailer.createTestAccount>>;
+export type EtherealAccount = Awaited<
+  ReturnType<typeof nodemailer.createTestAccount>
+>;
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.length > 0;
