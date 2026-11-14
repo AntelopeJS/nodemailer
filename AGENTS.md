@@ -10,7 +10,7 @@ The AntelopeJS module that implements `@antelopejs/interface-email` over SMTP wi
 
 ## Versioning
 
-Every `@antelopejs/*` range, in `package.json` and `playground/package.json` alike, stops below the next minor of its floor on 0.x (`>=0.4.0 <0.5.0`) and uses `~` from 1.0 (`~1.21.0`); the `dependency:ranges` step of `pnpm run checks` enforces it. The `@antelopejs/interface-core` range must admit the copy `@antelopejs/core` provides, or `pnpm test` refuses to load the module. When you raise a minimum, raise the same range in `playground/package.json` and the compatibility table in `README.md`, and update both lockfiles. The `version` range of the config example in `README.md` admits the `package.json` version (`readme:version`).
+Every `@antelopejs/*` range, in `package.json` and `playground/package.json` alike, stops below the next minor of its floor on 0.x (`>=0.5.1 <0.6.0`) and uses `~` from 1.0 (`~1.23.0`); the `dependency:ranges` step of `pnpm run checks` enforces it. The `@antelopejs/interface-core` range must admit the copy `@antelopejs/core` provides, or `pnpm test` refuses to load the module. When you raise a minimum, raise the same range in `playground/package.json` and the compatibility table in `README.md`, and update both lockfiles. The `version` range of the config example in `README.md` admits the `package.json` version (`readme:version`).
 
 ## Tests
 
