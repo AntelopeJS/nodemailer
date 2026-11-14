@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.0.12
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.11...v0.0.12)
+
+### 📖 Documentation
+
+- **readme:** Adopt the AntelopeJS framework README style ([#66](https://github.com/AntelopeJS/nodemailer/pull/66))
+
+### 📦 Build
+
+- **deps:** ⚠️  Cap @antelopejs ranges below the next minor on tooling-configs 0.6.0 ([#68](https://github.com/AntelopeJS/nodemailer/pull/68))
+
+### 🤖 CI
+
+- Run the checks on Windows beside Linux ([#67](https://github.com/AntelopeJS/nodemailer/pull/67))
+
+#### ⚠️ Breaking Changes
+
+- **deps:** ⚠️  Cap @antelopejs ranges below the next minor on tooling-configs 0.6.0 ([#68](https://github.com/AntelopeJS/nodemailer/pull/68))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli ([@Upd4ting](http://github.com/Upd4ting))
+
 ## v0.0.11
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.10...v0.0.11)
