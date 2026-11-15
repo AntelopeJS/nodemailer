@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.13
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.12...v0.0.13)
+
+### 📦 Build
+
+- Move to @antelopejs/tooling-configs 0.8 and the three-tier CI ([#69](https://github.com/AntelopeJS/nodemailer/pull/69))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli
+
 ## v0.0.12
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.11...v0.0.12)
