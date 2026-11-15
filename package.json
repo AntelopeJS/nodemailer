@@ -51,14 +51,14 @@
   "dependencies": {
     "@antelopejs/interface-core": ">=0.5.1 <0.6.0",
     "@antelopejs/interface-email": ">=0.2.0 <0.3.0",
+    "@types/nodemailer": "^6.4.23",
     "nodemailer": "^6.10.1"
   },
   "devDependencies": {
     "@antelopejs/core": "~1.23.0",
-    "@antelopejs/tooling-configs": ">=0.6.0 <0.7.0",
+    "@antelopejs/tooling-configs": ">=0.8.0 <0.9.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.19.15",
-    "@types/nodemailer": "^6.4.23",
     "@types/sinon": "^21.0.0",
     "eslint-plugin-perfectionist": "^5.11.0",
     "knip": "^6.34.0",
