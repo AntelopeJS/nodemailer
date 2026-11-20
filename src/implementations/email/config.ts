@@ -5,6 +5,7 @@ export const EMAIL_PREFIX = "[Email]";
 const ETHEREAL_HOST = "smtp.ethereal.email";
 const ETHEREAL_PORT = 587;
 const SECURE_PORT = 465;
+const DEFAULT_MAX_REQUEUES = 3;
 const NO_AUTH = new Set([undefined, null, false, 0, ""]);
 
 interface NodemailerAuthConfig {
@@ -22,6 +23,8 @@ export interface NodemailerConfig {
   secure?: boolean;
   /** Require STARTTLS. Defaults to true when `auth` holds credentials and the resolved `secure` is false. Set to false to allow clear-text authentication. */
   requireTLS?: boolean;
+  /** Times a message is requeued after its SMTP connection closes mid-send, before the send fails. Defaults to 3. A non-negative integer. */
+  maxRequeues?: number;
   auth?: NodemailerAuthConfig;
   defaults?: NodemailerDefaultsConfig;
   ethereal?: boolean;
@@ -84,6 +87,15 @@ export function CheckConfig(
   if (config.secure !== undefined && typeof config.secure !== "boolean") {
     throw createConfigError("Invalid config: secure must be a boolean");
   }
+  const { maxRequeues } = config;
+  if (
+    maxRequeues !== undefined &&
+    (!Number.isInteger(maxRequeues) || maxRequeues < 0)
+  ) {
+    throw createConfigError(
+      "Invalid config: maxRequeues must be a non-negative integer",
+    );
+  }
   const { defaults, auth } = config;
   const from =
     typeof defaults === "object" && defaults !== null
@@ -118,11 +130,17 @@ export function validateConfig(
   };
 }
 
+/** `SMTPPool.Options` plus the pool's `maxRequeues`, which `@types/nodemailer` omits. */
+interface PoolTransportOptions extends SMTPPool.Options {
+  maxRequeues: number;
+}
+
 export function buildEtherealTransportOptions(
   account: EtherealAccount,
-): SMTPPool.Options {
+): PoolTransportOptions {
   return {
     pool: true,
+    maxRequeues: DEFAULT_MAX_REQUEUES,
     host: ETHEREAL_HOST,
     port: ETHEREAL_PORT,
     secure: false,
@@ -135,10 +153,11 @@ export function buildEtherealTransportOptions(
 
 export function buildStandardTransportOptions(
   config: StandardNodemailerConfig,
-): SMTPPool.Options {
+): PoolTransportOptions {
   const secure = config.secure ?? config.port === SECURE_PORT;
-  const transportOptions: SMTPPool.Options = {
+  const transportOptions: PoolTransportOptions = {
     pool: true,
+    maxRequeues: config.maxRequeues ?? DEFAULT_MAX_REQUEUES,
     host: config.host,
     port: config.port,
     secure,

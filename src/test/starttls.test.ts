@@ -185,3 +185,58 @@ describe("SMTP connection reuse", () => {
     assert.equal(server.openConnections(), 0);
   });
 });
+
+describe("SMTP server that drops every connection", () => {
+  let connections = 0;
+  let server: net.Server;
+  let port: number;
+
+  beforeEach(async () => {
+    connections = 0;
+    server = net.createServer((socket) => {
+      connections += 1;
+      socket.on("error", () => socket.destroy());
+      socket.destroy();
+    });
+    await new Promise<void>((resolve) => {
+      server.listen(0, "127.0.0.1", resolve);
+    });
+    const address = server.address();
+    assert(isAddressInfo(address));
+    port = address.port;
+  });
+
+  afterEach(async () => {
+    destroy();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  });
+
+  async function sendWith(extra: { maxRequeues?: number }) {
+    await initTransporter({
+      host: "127.0.0.1",
+      port,
+      secure: false,
+      ...extra,
+    });
+    return Send({
+      from: "sender@example.com",
+      to: "to@example.com",
+      subject: "Dropped",
+      text: "body",
+    });
+  }
+
+  it("fails the send after the default number of requeues", async () => {
+    const result = await sendWith({});
+
+    assert.equal(result.success, false);
+    assert.equal(connections, 4);
+  });
+
+  it("fails the send after the configured number of requeues", async () => {
+    const result = await sendWith({ maxRequeues: 1 });
+
+    assert.equal(result.success, false);
+    assert.equal(connections, 2);
+  });
+});

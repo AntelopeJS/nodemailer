@@ -370,6 +370,7 @@ describe("Email interface", () => {
     assert.equal(options.from, ETHEREAL_USER);
     assert.deepStrictEqual(transportCall.args[0], {
       pool: true,
+      maxRequeues: 3,
       host: ETHEREAL_HOST,
       port: ETHEREAL_PORT,
       secure: false,
@@ -386,6 +387,21 @@ describe("Email configuration", () => {
         errors: [new Error("[Email] Invalid config: secure must be a boolean")],
       },
     );
+  });
+
+  it("refuses a maxRequeues that is negative or not an integer", async () => {
+    for (const maxRequeues of [-1, 1.5, "3"]) {
+      await assert.rejects(
+        () => startModule({ config: { ...DEFAULT_CONFIG, maxRequeues } }),
+        {
+          errors: [
+            new Error(
+              "[Email] Invalid config: maxRequeues must be a non-negative integer",
+            ),
+          ],
+        },
+      );
+    }
   });
 
   it("refuses a default sender that is not a string", async () => {
