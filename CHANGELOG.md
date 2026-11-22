@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.0.14
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.13...v0.0.14)
+
+### 🩹 Fixes
+
+- Bound pool requeues with a configurable maxRequeues ([#73](https://github.com/AntelopeJS/nodemailer/pull/73))
+
+### 📦 Build
+
+- Roll out trunk CI with tooling-configs 0.8.9 ([#72](https://github.com/AntelopeJS/nodemailer/pull/72))
+
+### 🤖 CI
+
+- Re-sync the AntelopeJS pack for the release app ([#74](https://github.com/AntelopeJS/nodemailer/pull/74))
+- Stop forwarding the retired RELEASE_GITHUB_TOKEN ([#76](https://github.com/AntelopeJS/nodemailer/pull/76))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli
+
 ## v0.0.13
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.12...v0.0.13)
