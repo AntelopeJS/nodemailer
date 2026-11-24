@@ -7,6 +7,7 @@ import type {
   ProviderFeatures,
   TemplateEmailParams,
 } from "@antelopejs/interface-email";
+import { renderInlineTemplate } from "@antelopejs/interface-email";
 
 import { type NodemailerConfig, validateConfig } from "./config";
 import { buildMailOptions, getFirstRecipient } from "./mail-options";
@@ -20,11 +21,7 @@ import {
   PROVIDER_NAME,
   updateBatchState,
 } from "./responses";
-import {
-  createTemplateEmailParams,
-  isProviderTemplate,
-  renderTemplate,
-} from "./template";
+import { createTemplateEmailParams, isProviderTemplate } from "./template";
 import {
   getTransporter,
   initializeEtherealTransporter,
@@ -96,8 +93,8 @@ export async function SendTemplate(
     return createNotSupportedResponse();
   }
 
-  const renderedTemplate = renderTemplate(
-    params.template,
+  const renderedTemplate = renderInlineTemplate(
+    params.template.content,
     params.variables ?? {},
   );
   const templateParams = createTemplateEmailParams(

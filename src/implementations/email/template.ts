@@ -1,36 +1,9 @@
 import type {
   EmailParams,
   InlineTemplate,
-  JsonObject,
-  JsonValue,
   ProviderTemplate,
   TemplateEmailParams,
 } from "@antelopejs/interface-email";
-
-const PLACEHOLDER = /\{\{([^{}]*)\}\}/g;
-
-function isStructured(value: JsonValue): value is JsonValue[] | JsonObject {
-  return typeof value === "object" && value !== null;
-}
-
-function renderValue(value: JsonValue | undefined): string {
-  if (value === undefined || value === null) {
-    return "";
-  }
-  return isStructured(value) ? JSON.stringify(value) : String(value);
-}
-
-export function renderTemplate(
-  template: InlineTemplate,
-  variables: NonNullable<TemplateEmailParams["variables"]>,
-): string {
-  return template.content.replace(PLACEHOLDER, (placeholder, raw: string) => {
-    const name = raw.trim();
-    return Object.hasOwn(variables, name)
-      ? renderValue(variables[name])
-      : placeholder;
-  });
-}
 
 export function isProviderTemplate(
   template: ProviderTemplate | InlineTemplate,
