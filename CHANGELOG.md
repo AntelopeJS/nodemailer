@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.0.15
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.14...v0.0.15)
+
+### 🩹 Fixes
+
+- **playground:** Pin interface-email like the module ([#80](https://github.com/AntelopeJS/nodemailer/pull/80))
+- **deps:** Depend on the stable @antelopejs/interface-email
+
+### 💅 Refactors
+
+- Use renderInlineTemplate from interface-email ([#77](https://github.com/AntelopeJS/nodemailer/pull/77))
+
+### 🏡 Chore
+
+- **deps:** Update dependency @types/nodemailer to v6.4.24 ([#79](https://github.com/AntelopeJS/nodemailer/pull/79))
+- **deps:** Update dependency oxlint-tsgolint to v7.0.2008 ([#81](https://github.com/AntelopeJS/nodemailer/pull/81))
+- **deps:** Update dependency rimraf to v6.1.4 ([#82](https://github.com/AntelopeJS/nodemailer/pull/82))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli
+
 ## v0.0.14
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.13...v0.0.14)

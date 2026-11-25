@@ -1,6 +1,6 @@
 {
   "name": "@antelopejs/nodemailer",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "SMTP email module for AntelopeJS, implementing the Email interface with Nodemailer",
   "keywords": [
     "antelopejs",
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@antelopejs/interface-core": ">=0.5.1 <0.6.0",
-    "@antelopejs/interface-email": "0.2.2-next.61.g99be894",
+    "@antelopejs/interface-email": ">=0.2.2 <0.3.0",
     "@types/nodemailer": "^6.4.23",
     "nodemailer": "^6.10.1"
   },
