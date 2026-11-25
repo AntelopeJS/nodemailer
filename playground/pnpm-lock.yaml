@@ -12,8 +12,8 @@ importers:
         specifier: '>=0.5.1 <0.6.0'
         version: 0.5.1
       '@antelopejs/interface-email':
-        specifier: '>=0.2.0 <0.3.0'
-        version: 0.2.0(@antelopejs/interface-core@0.5.1)
+        specifier: 0.2.2-next.61.g99be894
+        version: 0.2.2-next.61.g99be894(@antelopejs/interface-core@0.5.1)
     devDependencies:
       '@types/node':
         specifier: ^22.14.1
@@ -30,10 +30,10 @@ packages:
   '@antelopejs/interface-core@0.5.1':
     resolution: {integrity: sha512-ON/7TYA1yyT8UznzKi6vnwyjRU3byNE0OcFXBmf8dE/dqp8hKjeWHVyA2EUPOngmEimCLw4idZqOS5DJqMJx3g==}
 
-  '@antelopejs/interface-email@0.2.0':
-    resolution: {integrity: sha512-+MF/JZADoa0UPZQM7FICM+rjg9Sg9tzb+SjpXkIu0Df2lPv8QVEI021lCCAHecb8rXjUP+9unWCwKRsBytKVVg==}
+  '@antelopejs/interface-email@0.2.2-next.61.g99be894':
+    resolution: {integrity: sha512-opSAVIv37dWIGKkd3EsUtMiy4/Ysu79LrryeDZcltO8c1oG3XYZyZshn+B9a+vlo073K+S6S8pdeznheKrm/FQ==}
     peerDependencies:
-      '@antelopejs/interface-core': '>=0.2.4 <1.0.0'
+      '@antelopejs/interface-core': '>=0.5.1 <0.6.0'
 
   '@types/node@22.17.1':
     resolution: {integrity: sha512-y3tBaz+rjspDTylNjAX37jEC3TETEFGNJL6uQDxwF9/8GLLIjW1rvVHlynyuUKMnMr1Roq8jOv3vkopBjC4/VA==}
@@ -91,7 +91,7 @@ snapshots:
     dependencies:
       reflect-metadata: 0.2.2
 
-  '@antelopejs/interface-email@0.2.0(@antelopejs/interface-core@0.5.1)':
+  '@antelopejs/interface-email@0.2.2-next.61.g99be894(@antelopejs/interface-core@0.5.1)':
     dependencies:
       '@antelopejs/interface-core': 0.5.1
 
