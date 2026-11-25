@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - "@antelopejs/interface-email@0.2.2-next.61.g99be894"
