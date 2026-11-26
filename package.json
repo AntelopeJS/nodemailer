@@ -55,7 +55,7 @@
     "nodemailer": "^6.10.1"
   },
   "devDependencies": {
-    "@antelopejs/core": "~1.23.0",
+    "@antelopejs/core": "~1.24.0",
     "@antelopejs/tooling-configs": "^0.10.7",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.19.15",
