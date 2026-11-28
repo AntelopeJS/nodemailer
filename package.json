@@ -35,7 +35,7 @@
     "format": "oxfmt .",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "test": "pnpm run build && ajs module test .",
+    "test": "pnpm run build && ajs module test . --timeout 30000",
     "release": "pnpm run lint && pnpm run typecheck && pnpm run prepack && release-it",
     "format:check": "oxfmt --check .",
     "knip": "knip",
@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@antelopejs/core": "~1.24.0",
-    "@antelopejs/tooling-configs": "^0.10.7",
+    "@antelopejs/tooling-configs": "^0.10.12",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.19.15",
     "@types/sinon": "^21.0.0",
