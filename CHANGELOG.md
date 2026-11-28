@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.0.16
+
+[compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.15...v0.0.16)
+
+### 🩹 Fixes
+
+- **playground:** Pin interface-email to the stable range ([#83](https://github.com/AntelopeJS/nodemailer/pull/83))
+
+### 📦 Build
+
+- **ci:** Sync tooling-configs 0.10.12 ([#91](https://github.com/AntelopeJS/nodemailer/pull/91))
+- **deps:** Move to tooling-configs 0.10.14 ([#92](https://github.com/AntelopeJS/nodemailer/pull/92))
+
+### 🏡 Chore
+
+- **deps:** Update dependency typescript to v5.9.3 ([#84](https://github.com/AntelopeJS/nodemailer/pull/84))
+- Update tooling-configs to 0.10.7 and pnpm to 10.34.9 ([#86](https://github.com/AntelopeJS/nodemailer/pull/86))
+- **deps:** Update dependency @types/node to v22.20.5 ([#88](https://github.com/AntelopeJS/nodemailer/pull/88))
+- **deps:** Update dependency @antelopejs/core to ~1.24.0 ([#87](https://github.com/AntelopeJS/nodemailer/pull/87))
+- **deps:** Update antelopejs tooling configs ([#85](https://github.com/AntelopeJS/nodemailer/pull/85))
+- **deps:** Update dependency @antelopejs/core to v1.24.9 ([#89](https://github.com/AntelopeJS/nodemailer/pull/89))
+
+### ❤️ Contributors
+
+- Antony Rizzitelli
+
 ## v0.0.15
 
 [compare changes](https://github.com/AntelopeJS/nodemailer/compare/v0.0.14...v0.0.15)
